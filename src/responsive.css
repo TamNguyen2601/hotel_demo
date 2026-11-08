@@ -1,0 +1,65 @@
+/* ============================================================
+   RESPONSIVE FIXES
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  /* Intro grid */
+  div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 48px 0; }
+
+  .hero-actions { flex-direction: column; align-items: center; }
+
+  .attractions-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .room-gallery-main { height: 280px; }
+
+  .modal { margin: 0; border-radius: var(--radius-md) var(--radius-md) 0 0; max-height: 95vh; }
+  .modal-overlay { align-items: flex-end; }
+
+  .modal-body { padding: 20px; }
+  .modal-header { padding: 20px 20px 16px; }
+  .modal-footer { padding: 16px 20px 24px; flex-direction: column; }
+  .modal-footer .btn { width: 100%; justify-content: center; }
+
+  .form-row { grid-template-columns: 1fr !important; }
+
+  .food-select-grid { grid-template-columns: 1fr !important; }
+
+  .amenities-list { grid-template-columns: 1fr !important; }
+
+  .packages-grid { grid-template-columns: 1fr !important; }
+
+  .sauna-features-grid { grid-template-columns: 1fr !important; }
+
+  .footer-grid { grid-template-columns: 1fr !important; }
+
+  .navbar-inner { padding: 0 16px; }
+
+  .page-header { padding: 90px 24px 40px; }
+  .page-header h1 { font-size: 2rem; }
+
+  .rooms-filter { padding: 20px 16px; gap: 8px; }
+  .filter-btn { padding: 8px 14px; font-size: 0.82rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 0.95rem; }
+  .btn-lg { padding: 13px 24px; font-size: 0.95rem; }
+
+  .room-gallery-thumbs img { width: 72px; height: 52px; }
+
+  .container { padding: 0 16px; }
+}
+
