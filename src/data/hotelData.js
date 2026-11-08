@@ -5,11 +5,10 @@
 export const HOTEL_INFO = {
   name: 'Mộc Chàm',
   fullName: 'Mộc Chàm Retreat & Restaurant',
-  tagline: 'Nghỉ dưỡng đẳng cấp giữa lòng Cao Bằng',
-  address: '123 Đường Trần Hưng Đạo, TP. Cao Bằng, tỉnh Cao Bằng',
+  tagline: 'Nghỉ dưỡng giữa lòng núi rừng Cao Bằng',
+  address: 'Xã Đàm Thủy, tỉnh Cao Bằng',
   phone: '0263 123 4567',
   email: 'info@moccham.vn',
-  stars: 5,
 };
 
 // ============================================================
@@ -32,7 +31,7 @@ const ROOM_AMENITIES_PREMIUM = [
 ];
 
 const ROOM_AMENITIES_DOUBLE = [
-  'Giường đôi Queen size',
+  '02 Giường đôi Queen size',
   'Phòng tắm bồn tắm',
   'Cửa sổ view thành phố',
   'TV 55 inch Full HD',
@@ -46,9 +45,10 @@ const ROOM_AMENITIES_DOUBLE = [
 ];
 
 const ROOM_AMENITIES_SINGLE = [
-  'Giường đơn tiêu chuẩn',
+  '02 Giường đơn (1,2m × 2m)',
   'Phòng tắm vòi hoa sen',
-  'Cửa sổ thoáng mát',
+  'Ban công thoáng mát',
+  'Bàn làm việc nhỏ gọn',
   'TV 43 inch Full HD',
   'WiFi tốc độ cao',
   'Két an toàn điện tử',
@@ -58,19 +58,21 @@ const ROOM_AMENITIES_SINGLE = [
 ];
 
 // Premium Rooms - Floor 2 (201-208)
+// Size cycles: 28, 29, 30, 28, 29, 30, 28, 29
+const PREMIUM_SIZES = [28, 29, 30, 28, 29, 30, 28, 29];
 export const PREMIUM_ROOMS = Array.from({ length: 8 }, (_, i) => ({
   id: `room-2${String(i + 1).padStart(2, '0')}`,
   number: `2${String(i + 1).padStart(2, '0')}`,
   floor: 2,
   type: 'premium',
   typeName: 'Phòng Cao Cấp',
-  price: 2800000 + i * 100000,
-  priceWeekend: 3200000 + i * 100000,
-  size: 45 + i * 2,
+  price: 1274000,
+  priceWeekend: 1574000,
+  size: PREMIUM_SIZES[i],
   maxGuests: 2,
   bedType: 'King size',
-  description: `Phòng cao cấp ${200 + i + 1} mang đến trải nghiệm nghỉ dưỡng đẳng cấp 5 sao với nội thất sang trọng được thiết kế tinh tế, lấy cảm hứng từ văn hóa bản địa Cao Bằng. Từ ban công phòng, du khách có thể chiêm ngưỡng toàn cảnh núi rừng hùng vĩ và dòng sông Bằng thơ mộng chảy qua thành phố.`,
-  shortDesc: 'Sang trọng với ban công view núi, bồn tắm Jacuzzi, dịch vụ quản gia riêng.',
+  description: `Phòng cao cấp ${200 + i + 1} mang đến trải nghiệm nghỉ dưỡng đẳng cấp 5 sao với nội thất sang trọng được thiết kế tinh tế, lấy cảm hứng từ văn hóa bản địa Cao Bằng. Phòng rộng ${PREMIUM_SIZES[i]}m² với ban công hướng ra núi rừng hùng vĩ, bồn tắm Jacuzzi riêng và dịch vụ quản gia tận tâm 24/7.`,
+  shortDesc: `${PREMIUM_SIZES[i]}m² • Ban công view núi • Jacuzzi • Quản gia riêng`,
   amenities: ROOM_AMENITIES_PREMIUM,
   images: [
     `https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80`,
@@ -80,23 +82,24 @@ export const PREMIUM_ROOMS = Array.from({ length: 8 }, (_, i) => ({
     `https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80`,
   ],
   thumbnail: `https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80`,
-  available: i !== 2 && i !== 5,
+  available: true,
 }));
 
 // Standard Double Rooms - Floor 3 (301-311)
+// Size alternates: 23, 24, 23, 24...
 export const DOUBLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   id: `room-3${String(i + 1).padStart(2, '0')}`,
   number: `3${String(i + 1).padStart(2, '0')}`,
   floor: 3,
   type: 'double',
   typeName: 'Phòng Đôi Tiêu Chuẩn',
-  price: 1500000 + i * 50000,
-  priceWeekend: 1800000 + i * 50000,
-  size: 28 + i,
+  price: 879000,
+  priceWeekend: 1079000,
+  size: i % 2 === 0 ? 23 : 24,
   maxGuests: 2,
   bedType: 'Queen size',
-  description: `Phòng đôi tiêu chuẩn ${300 + i + 1} là lựa chọn hoàn hảo cho các cặp đôi hoặc bạn bè muốn khám phá vẻ đẹp Cao Bằng. Phòng được thiết kế ấm cúng với màu sắc tươi sáng, nội thất gỗ tự nhiên mang phong cách núi rừng hiện đại. Phòng tắm rộng rãi với bồn tắm là điểm nhấn đặc biệt cho kỳ nghỉ của bạn.`,
-  shortDesc: 'Phòng đôi ấm cúng với bồn tắm, view thành phố, lý tưởng cho cặp đôi.',
+  description: `Phòng đôi tiêu chuẩn ${300 + i + 1} là lựa chọn hoàn hảo cho các cặp đôi hoặc bạn bè muốn khám phá vẻ đẹp Cao Bằng. Phòng ${i % 2 === 0 ? 23 : 24}m² được thiết kế ấm cúng với màu sắc tươi sáng, nội thất gỗ tự nhiên mang phong cách núi rừng hiện đại. Phòng tắm bồn tắm là điểm nhấn đặc biệt cho kỳ nghỉ của bạn.`,
+  shortDesc: `${i % 2 === 0 ? 23 : 24}m² • Giường Queen size • Bồn tắm • View thành phố`,
   amenities: ROOM_AMENITIES_DOUBLE,
   images: [
     `https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80`,
@@ -105,23 +108,25 @@ export const DOUBLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
     `https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80`,
   ],
   thumbnail: `https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=400&q=80`,
-  available: i !== 1 && i !== 7,
+  available: true,
 }));
 
 // Standard Single Rooms - Floor 4 (401-411)
+// Size cycles: 22, 23, 24, 22, 23, 24...
+const SINGLE_SIZES = [22, 23, 24, 22, 23, 24, 22, 23, 24, 22, 23];
 export const SINGLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   id: `room-4${String(i + 1).padStart(2, '0')}`,
   number: `4${String(i + 1).padStart(2, '0')}`,
   floor: 4,
   type: 'single',
   typeName: 'Phòng Đơn Tiêu Chuẩn',
-  price: 900000 + i * 30000,
-  priceWeekend: 1100000 + i * 30000,
-  size: 20 + i,
-  maxGuests: 1,
-  bedType: 'Single',
-  description: `Phòng đơn tiêu chuẩn ${400 + i + 1} là không gian nghỉ ngơi lý tưởng cho du khách đơn thân hoặc khách công tác. Với thiết kế thông minh tối ưu không gian, phòng đầy đủ tiện nghi cần thiết giúp bạn có giấc ngủ ngon sau một ngày khám phá danh lam thắng cảnh Cao Bằng.`,
-  shortDesc: 'Phòng đơn tiện nghi, thoải mái cho du khách đơn thân hoặc khách công tác.',
+  price: 879000,
+  priceWeekend: 1079000,
+  size: SINGLE_SIZES[i],
+  maxGuests: 2,
+  bedType: '2 giường đơn',
+  description: `Phòng đơn tiêu chuẩn ${400 + i + 1} (${SINGLE_SIZES[i]}m²) chuyên phục vụ khách đi theo cặp bạn bè, đồng nghiệp hoặc khách đoàn công tác. Phòng bố trí 02 giường đơn (1,2m × 2m/giường), thiết kế tối ưu không gian linh hoạt, có bàn làm việc nhỏ gọn và ban công thoáng mát. Vệ sinh khép kín, trang bị đầy đủ tiện nghi thiết yếu.`,
+  shortDesc: `${SINGLE_SIZES[i]}m² • 2 giường đơn • Ban công • Bàn làm việc`,
   amenities: ROOM_AMENITIES_SINGLE,
   images: [
     `https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=80`,
@@ -129,7 +134,7 @@ export const SINGLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
     `https://images.unsplash.com/photo-1495433324511-bf8e92934d90?w=800&q=80`,
   ],
   thumbnail: `https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=400&q=80`,
-  available: i !== 3 && i !== 9,
+  available: true,
 }));
 
 export const ALL_ROOMS = [...PREMIUM_ROOMS, ...DOUBLE_ROOMS, ...SINGLE_ROOMS];
@@ -247,7 +252,7 @@ export const CAO_BANG_ATTRACTIONS = [
     id: 'attr-2',
     name: 'Hồ Thang Hen',
     description: 'Quần thể 36 hồ nước xanh biếc nằm giữa rừng nguyên sinh và núi đá vôi hùng vĩ. Vẻ đẹp hoang sơ, nguyên thủy của hồ Thang Hen khiến du khách như lạc vào chốn thần tiên.',
-    image: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80',
+    image: '/cao-bang-hero.jpg',
     distance: '25 km từ trung tâm',
   },
   {
@@ -261,7 +266,7 @@ export const CAO_BANG_ATTRACTIONS = [
     id: 'attr-4',
     name: 'Động Ngườm Ngao',
     description: 'Hang động đá vôi dài hơn 2.144m với những nhũ đá kỳ bí muôn hình vạn trạng. Ánh đèn chiếu sáng tô điểm thêm vẻ huyền ảo cho chốn tiên cảnh dưới lòng đất.',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&q=80',
+    image: '/nguom-ngao.jpg',
     distance: '95 km từ trung tâm',
   },
   {
@@ -281,54 +286,53 @@ export const CAO_BANG_ATTRACTIONS = [
 ];
 
 // ============================================================
-// SAUNA DATA
+// SPA / WELLNESS DATA (formerly Sauna)
 // ============================================================
 
-export const SAUNA_FEATURES = [
+export const SPA_FEATURES = [
   {
     icon: '🌿',
-    title: 'Thảo Dược Núi Rừng',
-    description: 'Sử dụng các loại thảo dược quý hiếm được thu hái từ rừng núi Cao Bằng: lá thuốc người Tày, gừng rừng, sả núi, ngải cứu rừng... kết hợp theo bí quyết dân gian cổ truyền.',
+    title: 'Thảo Dược Người Dao / Tày',
+    description: 'Sử dụng bài thuốc lá cổ truyền của người Dao và người Tày Cao Bằng. 04 bồn ngâm thảo dược được pha chế theo bí quyết dân gian, giúp lưu thông khí huyết và phục hồi năng lượng.',
   },
   {
-    icon: '💧',
-    title: 'Nước Suối Khoáng',
-    description: 'Nguồn nước khoáng thiên nhiên từ mạch ngầm núi đá vôi Cao Bằng, giàu khoáng chất có lợi cho da và sức khỏe. Nhiệt độ ổn định 38-42°C tối ưu cho quá trình thư giãn.',
+    icon: '☁️',
+    title: 'Phòng Xông Hơi View Mây',
+    description: 'Phòng xông hơi thảo dược với tầm nhìn toàn cảnh mây trời và núi non hùng vĩ vùng biên giới. Trải nghiệm thư giãn tuyệt đối kết hợp thiên nhiên và liệu pháp truyền thống.',
   },
   {
-    icon: '🏔️',
-    title: 'Không Gian Núi Rừng',
-    description: 'Khu xông hơi được thiết kế mở hướng ra thiên nhiên núi rừng Cao Bằng, tạo cảm giác hòa mình vào đất trời. Âm thanh tiếng suối chảy và tiếng chim hót giúp tâm trí thư thái hoàn toàn.',
+    icon: '🫖',
+    title: 'Trà Chiều Panorama',
+    description: 'Quầy trà chiều với thiết kế kính panorama mở trọn tầm nhìn thung lũng. Thưởng thức cà phê, chè đắng và trà hoa quả Cao Bằng giữa không gian núi rừng khoáng đạt.',
   },
   {
     icon: '✨',
-    title: 'Liệu Pháp Toàn Thân',
-    description: 'Gói liệu trình hoàn chỉnh bao gồm: xông thảo dược, massage toàn thân, tắm muối khoáng và đắp mặt nạ bùn núi. Phục hồi năng lượng và làn da sau những ngày khám phá.',
+    title: 'Liệu Trình Toàn Diện',
+    description: 'Gói spa hoàn chỉnh: ngâm lá thuốc, xông hơi thảo dược, massage phục hồi và thưởng trà chiều. Phục hồi năng lượng hoàn toàn sau chuyến khám phá Cao Bằng.',
   },
 ];
 
-export const SAUNA_PACKAGES = [
+export const SPA_PACKAGES = [
   {
-    id: 'sauna-basic',
+    id: 'spa-basic',
     name: 'Gói Thư Giãn',
     duration: '60 phút',
-    price: 350000,
-    includes: ['Xông thảo dược 30 phút', 'Tắm muối khoáng', 'Trà thảo dược'],
+    price: 299000,
+    includes: ['Ngâm lá thuốc 30 phút', 'Tắm muối khoáng 30 phút'],
   },
   {
-    id: 'sauna-standard',
+    id: 'spa-standard',
     name: 'Gói Phục Hồi',
     duration: '90 phút',
-    price: 550000,
-    includes: ['Xông thảo dược 45 phút', 'Massage vai gáy 30 phút', 'Tắm muối khoáng', 'Trà thảo dược & bánh ngọt'],
+    price: 499000,
+    includes: ['Ngâm lá thuốc 45 phút', 'Xông hơi thảo dược', 'Massage vai gáy 30 phút'],
   },
   {
-    id: 'sauna-premium',
+    id: 'spa-premium',
     name: 'Gói Toàn Diện',
     duration: '120 phút',
-    price: 850000,
-    includes: ['Xông thảo dược 45 phút', 'Massage toàn thân 60 phút', 'Đắp mặt nạ bùn núi', 'Tắm muối khoáng', 'Trà thảo dược & bánh ngọt cao cấp'],
+    price: 789000,
+    includes: ['Ngâm lá thuốc 45 phút', 'Xông hơi thảo dược view mây', 'Massage toàn thân 60 phút', 'Đắp mặt nạ bùn núi'],
     recommended: true,
   },
 ];
-

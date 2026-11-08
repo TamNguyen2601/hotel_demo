@@ -4,11 +4,14 @@ import BookingModal from '../components/BookingModal';
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
+const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingConfirmed }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [bookingRoom, setBookingRoom] = useState(null);
 
   if (!room) return null;
+
+  // isBooked: passed from App.jsx (global state)
+  const roomIsBooked = isBooked || false;
 
   return (
     <>
@@ -36,21 +39,13 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
             {/* Gallery */}
             <div className="room-gallery">
               <div className="room-gallery-main">
-                <img
-                  src={room.images[activeImg]}
-                  alt={`Phòng ${room.number} - ảnh ${activeImg + 1}`}
-                />
+                <img src={room.images[activeImg]} alt={`Phòng ${room.number} - ảnh ${activeImg + 1}`} />
               </div>
               <div className="room-gallery-thumbs">
                 {room.images.map((img, i) => (
-                  <img
-                    key={i}
-                    src={img}
-                    alt={`Góc ${i + 1}`}
+                  <img key={i} src={img} alt={`Góc ${i + 1}`}
                     className={i === activeImg ? 'active' : ''}
-                    onClick={() => setActiveImg(i)}
-                    loading="lazy"
-                  />
+                    onClick={() => setActiveImg(i)} loading="lazy" />
                 ))}
               </div>
             </div>
@@ -61,8 +56,8 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
                 <span className={`badge ${room.type === 'premium' ? 'badge-gold' : 'badge-pink'}`}>
                   {room.type === 'premium' ? '👑 Phòng Cao Cấp' : '🏠 Phòng Tiêu Chuẩn'}
                 </span>
-                <span className={`badge ${room.available ? 'badge-available' : 'badge-unavailable'}`}>
-                  {room.available ? '✓ Còn Phòng' : '✗ Đã Đặt'}
+                <span className={`badge ${!roomIsBooked ? 'badge-available' : 'badge-unavailable'}`}>
+                  {!roomIsBooked ? '✓ Còn Phòng' : '✗ Đã Đặt'}
                 </span>
                 <span className="chip">📐 {room.size}m²</span>
                 <span className="chip">🛏️ {room.bedType}</span>
@@ -72,7 +67,6 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
 
               <p className="room-detail-desc">{room.description}</p>
 
-              {/* Amenities */}
               <div className="room-amenities">
                 <h3>Tiện Nghi Phòng</h3>
                 <div className="amenities-list">
@@ -86,15 +80,13 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
               <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
                 <button
                   className="btn btn-gold btn-lg w-full"
-                  disabled={!room.available}
-                  onClick={() => setBookingRoom(room)}
-                  style={!room.available ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                  disabled={roomIsBooked}
+                  onClick={() => !roomIsBooked && setBookingRoom(room)}
+                  style={roomIsBooked ? { opacity: 0.45, cursor: 'not-allowed' } : {}}
                 >
-                  🎉 {room.available ? 'Đặt Phòng Ngay' : 'Phòng Đã Được Đặt'}
+                  🎉 {!roomIsBooked ? 'Đặt Phòng Ngay' : 'Phòng Đã Được Đặt'}
                 </button>
-                <button className="btn btn-outline" onClick={onBack}>
-                  ← Quay Lại
-                </button>
+                <button className="btn btn-outline" onClick={onBack}>← Quay Lại</button>
               </div>
             </div>
           </div>
@@ -114,22 +106,16 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
               <div style={{ marginBottom: 20 }}>
                 {[
                   { icon: '📐', label: 'Diện tích', value: `${room.size}m²` },
-                  { icon: '🛏️', label: 'Giường', value: room.bedType },
-                  { icon: '👥', label: 'Sức chứa', value: `${room.maxGuests} khách` },
-                  { icon: '🏢', label: 'Tầng', value: `Tầng ${room.floor}` },
-                  { icon: '🕐', label: 'Check-in', value: '14:00' },
-                  { icon: '🕛', label: 'Check-out', value: '12:00' },
+                  { icon: '🛏️', label: 'Giường',    value: room.bedType },
+                  { icon: '👥', label: 'Sức chứa',   value: `${room.maxGuests} khách` },
+                  { icon: '🏢', label: 'Tầng',        value: `Tầng ${room.floor}` },
+                  { icon: '🕐', label: 'Check-in',   value: '14:00' },
+                  { icon: '🕛', label: 'Check-out',  value: '12:00' },
                 ].map(item => (
-                  <div
-                    key={item.label}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: '8px 0',
-                      borderBottom: '1px solid var(--border)',
-                      fontSize: '0.88rem',
-                    }}
-                  >
+                  <div key={item.label} style={{
+                    display: 'flex', justifyContent: 'space-between',
+                    padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '0.88rem',
+                  }}>
                     <span style={{ color: 'var(--text-light)' }}>{item.icon} {item.label}</span>
                     <strong style={{ color: 'var(--text)' }}>{item.value}</strong>
                   </div>
@@ -137,29 +123,37 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
               </div>
 
               <button
-                className="btn btn-gold w-full"
-                disabled={!room.available}
-                onClick={() => setBookingRoom(room)}
+                disabled={roomIsBooked}
+                onClick={() => !roomIsBooked && setBookingRoom(room)}
                 style={{
-                  justifyContent: 'center',
-                  fontSize: '1rem',
-                  padding: '14px',
-                  opacity: !room.available ? 0.5 : 1,
-                  cursor: !room.available ? 'not-allowed' : 'pointer',
-                  width: '100%',
+                  width: '100%', display: 'flex', justifyContent: 'center',
+                  alignItems: 'center', fontSize: '1rem', padding: '14px',
+                  borderRadius: 'var(--radius-sm)', border: 'none', cursor: roomIsBooked ? 'not-allowed' : 'pointer',
+                  background: roomIsBooked
+                    ? 'var(--border)'
+                    : 'linear-gradient(135deg, var(--gold), var(--gold-light))',
+                  color: roomIsBooked ? 'var(--text-light)' : 'var(--dark)',
+                  fontWeight: 700, fontFamily: 'inherit', transition: 'all 0.3s',
+                  opacity: roomIsBooked ? 0.6 : 1,
                 }}
               >
-                🎉 {room.available ? 'Đặt Phòng Ngay' : 'Phòng Đã Được Đặt'}
+                🎉 {!roomIsBooked ? 'Đặt Phòng Ngay' : 'Phòng Đã Được Đặt'}
               </button>
 
-              {room.available && (
+              {!roomIsBooked && (
                 <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-light)', marginTop: 10 }}>
                   🔒 Thanh toán an toàn tại khách sạn · Miễn phí huỷ trước 24h
                 </p>
               )}
 
-              <div style={{ marginTop: 20, padding: 16, background: 'var(--pink-soft)', borderRadius: 'var(--radius-sm)' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--green-dark)', marginBottom: 8 }}>
+              {roomIsBooked && (
+                <div style={{ marginTop: 12, padding: '12px 16px', background: '#fef2f2', borderRadius: 'var(--radius-sm)', border: '1px solid #fecaca', fontSize: '0.82rem', color: '#991b1b', textAlign: 'center' }}>
+                  Phòng này đã được đặt trong phiên hiện tại
+                </div>
+              )}
+
+              <div style={{ marginTop: 16, padding: 16, background: 'var(--pink-soft)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--green-dark)', marginBottom: 6 }}>
                   📞 Tư vấn trực tiếp
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-light)' }}>
@@ -168,22 +162,27 @@ const RoomDetailPage = ({ room, onBack, onNavigateToRooms }) => {
               </div>
             </div>
 
-            {/* Other rooms suggestion */}
-            <div style={{ marginTop: 24, padding: 20, background: 'var(--white)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border)' }}>
-              <h4 style={{ color: 'var(--green-dark)', marginBottom: 12, fontSize: '0.95rem' }}>
-                🏨 Phòng Khác
-              </h4>
-              <button className="btn btn-outline btn-sm w-full" style={{ justifyContent: 'center', marginBottom: 8 }}
+            <div style={{ marginTop: 20, padding: 20, background: 'var(--white)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border)' }}>
+              <h4 style={{ color: 'var(--green-dark)', marginBottom: 12, fontSize: '0.9rem' }}>🏨 Xem Phòng Khác</h4>
+              <button className="btn btn-outline btn-sm w-full" style={{ justifyContent: 'center' }}
                 onClick={onNavigateToRooms}>
-                Xem tất cả phòng
+                Tất cả phòng →
               </button>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Booking Modal */}
       {bookingRoom && (
-        <BookingModal room={bookingRoom} onClose={() => setBookingRoom(null)} />
+        <BookingModal
+          room={bookingRoom}
+          onClose={() => setBookingRoom(null)}
+          onBookingConfirmed={(id) => {
+            if (onBookingConfirmed) onBookingConfirmed(id);
+            // Không đóng modal ở đây - để modal tự hiện màn hình thành công
+          }}
+        />
       )}
     </>
   );

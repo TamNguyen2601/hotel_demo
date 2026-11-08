@@ -11,9 +11,8 @@ const Footer = ({ onNavigate }) => {
             <img src="/logo.jpg" alt="Mộc Chàm" />
             <div className="footer-brand-name">Mộc Chàm</div>
             <div className="footer-brand-sub">Retreat & Restaurant</div>
-            <div className="stars-row">★★★★★</div>
             <p style={{ marginTop: 12 }}>
-              Khách sạn 5 sao đẳng cấp giữa lòng Cao Bằng — nơi hội tụ văn hóa bản địa,
+              Điểm đến nghỉ dưỡng độc đáo giữa lòng Cao Bằng — nơi hội tụ văn hóa bản địa,
               ẩm thực đặc sản và dịch vụ chăm sóc sức khỏe cao cấp.
             </p>
           </div>
@@ -23,10 +22,11 @@ const Footer = ({ onNavigate }) => {
             <h4>Khám Phá</h4>
             <ul>
               <li onClick={() => onNavigate('home')}>Trang Chủ</li>
+              <li onClick={() => onNavigate('explore')}>Khám Phá Khách Sạn</li>
               <li onClick={() => onNavigate('rooms', { filter: 'premium' })}>Phòng Cao Cấp</li>
               <li onClick={() => onNavigate('rooms', { filter: 'standard' })}>Phòng Tiêu Chuẩn</li>
               <li onClick={() => onNavigate('food')}>Nhà Hàng</li>
-              <li onClick={() => onNavigate('sauna')}>Xông Hơi</li>
+              <li onClick={() => onNavigate('spa')}>Chăm Sóc Sức Khỏe</li>
             </ul>
           </div>
 

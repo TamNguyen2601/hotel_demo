@@ -1,31 +1,22 @@
 import React, { useState } from 'react';
-import { MENU_ITEMS, SAUNA_PACKAGES } from '../data/hotelData';
+import { MENU_ITEMS, SPA_PACKAGES } from '../data/hotelData';
 
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-const BookingModal = ({ room, onClose }) => {
+const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
   const [form, setForm] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    checkIn: '',
-    checkOut: '',
-    guests: 1,
-    notes: '',
+    fullName: '', phone: '', email: '',
+    checkIn: '', checkOut: '', guests: 1, notes: '',
   });
-
   const [foodService, setFoodService] = useState(false);
-  const [saunaService, setSaunaService] = useState(false);
+  const [spaService, setSpaService] = useState(false);
   const [selectedFoods, setSelectedFoods] = useState([]);
-  const [selectedSauna, setSelectedSauna] = useState('');
+  const [selectedSpa, setSelectedSpa] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const toggleFood = (id) => {
-    setSelectedFoods(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-    );
-  };
+  const toggleFood = (id) =>
+    setSelectedFoods(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   const calcNights = () => {
     if (!form.checkIn || !form.checkOut) return 1;
@@ -34,16 +25,11 @@ const BookingModal = ({ room, onClose }) => {
   };
 
   const calcTotal = () => {
-    const nights = calcNights();
-    let total = room.price * nights;
-    if (foodService) {
-      selectedFoods.forEach(id => {
-        const item = MENU_ITEMS.find(m => m.id === id);
-        if (item) total += item.price;
-      });
-    }
-    if (saunaService && selectedSauna) {
-      const pkg = SAUNA_PACKAGES.find(s => s.id === selectedSauna);
+    let total = room.price * calcNights();
+    if (foodService)
+      selectedFoods.forEach(id => { const item = MENU_ITEMS.find(m => m.id === id); if (item) total += item.price; });
+    if (spaService && selectedSpa) {
+      const pkg = SPA_PACKAGES.find(s => s.id === selectedSpa);
       if (pkg) total += pkg.price;
     }
     return total;
@@ -52,6 +38,8 @@ const BookingModal = ({ room, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
+    // Mark room as booked in global state
+    if (onBookingConfirmed) onBookingConfirmed(room.id);
   };
 
   if (submitted) {
@@ -62,8 +50,8 @@ const BookingModal = ({ room, onClose }) => {
             <div className="success-icon">🎉</div>
             <h3>Đặt Phòng Thành Công!</h3>
             <p>
-              Cảm ơn <strong>{form.fullName}</strong>! Yêu cầu đặt phòng <strong>{room.number}</strong> của
-              bạn đã được ghi nhận.<br />
+              Cảm ơn <strong>{form.fullName}</strong>! Yêu cầu đặt phòng{' '}
+              <strong>{room.number}</strong> đã được ghi nhận.<br />
               Chúng tôi sẽ liên hệ xác nhận trong vòng 2 giờ qua số <strong>{form.phone}</strong>.
             </p>
             <div style={{ background: 'var(--pink-soft)', borderRadius: 'var(--radius-sm)', padding: '16px 24px', marginBottom: 24, textAlign: 'left', display: 'inline-block', minWidth: 280 }}>
@@ -72,13 +60,19 @@ const BookingModal = ({ room, onClose }) => {
                 <span>{formatPrice(room.price * calcNights())}</span>
               </div>
               {foodService && selectedFoods.length > 0 && (
-                <div className="price-summary-row"><span>Dịch vụ ăn uống</span><span>✓</span></div>
+                <div className="price-summary-row">
+                  <span>Dịch vụ ăn uống ({selectedFoods.length} món)</span>
+                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (MENU_ITEMS.find(m => m.id === id)?.price || 0), 0))}</span>
+                </div>
               )}
-              {saunaService && selectedSauna && (
-                <div className="price-summary-row"><span>Xông hơi</span><span>✓</span></div>
+              {spaService && selectedSpa && (
+                <div className="price-summary-row">
+                  <span>Spa — {SPA_PACKAGES.find(s => s.id === selectedSpa)?.name}</span>
+                  <span>{formatPrice(SPA_PACKAGES.find(s => s.id === selectedSpa)?.price || 0)}</span>
+                </div>
               )}
               <div className="price-summary-row total">
-                <span>Tổng cộng</span>
+                <span>Tổng Cộng</span>
                 <span style={{ color: 'var(--green-primary)' }}>{formatPrice(calcTotal())}</span>
               </div>
             </div>
@@ -93,12 +87,11 @@ const BookingModal = ({ room, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
-        {/* Header */}
         <div className="modal-header">
           <div>
             <h2>Đặt Phòng {room.number}</h2>
             <p style={{ fontSize: '0.88rem', color: 'var(--text-light)', marginTop: 4 }}>
-              {room.typeName} — {formatPrice(room.price)}/đêm
+              {room.typeName} — {formatPrice(room.price)}/đêm · {room.size}m²
             </p>
           </div>
           <button className="modal-close" onClick={onClose}>✕</button>
@@ -112,70 +105,45 @@ const BookingModal = ({ room, onClose }) => {
               <div className="form-row">
                 <div className="form-group">
                   <label>Họ và Tên *</label>
-                  <input
-                    type="text"
-                    placeholder="Nguyễn Văn A"
-                    value={form.fullName}
-                    onChange={e => setForm({ ...form, fullName: e.target.value })}
-                    required
-                  />
+                  <input type="text" placeholder="Nguyễn Văn A" value={form.fullName}
+                    onChange={e => setForm({ ...form, fullName: e.target.value })} required />
                 </div>
                 <div className="form-group">
                   <label>Số Điện Thoại *</label>
-                  <input
-                    type="tel"
-                    placeholder="0912 345 678"
-                    value={form.phone}
-                    onChange={e => setForm({ ...form, phone: e.target.value })}
-                    required
-                  />
+                  <input type="tel" placeholder="0912 345 678" value={form.phone}
+                    onChange={e => setForm({ ...form, phone: e.target.value })} required />
                 </div>
               </div>
               <div className="form-row single">
                 <div className="form-group">
                   <label>Email</label>
-                  <input
-                    type="email"
-                    placeholder="email@example.com"
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                  />
+                  <input type="email" placeholder="email@example.com" value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })} />
                 </div>
               </div>
             </div>
 
-            {/* Thông tin phòng */}
+            {/* Thông tin đặt phòng */}
             <div className="form-section">
               <div className="form-section-title">🛏️ Thông Tin Đặt Phòng</div>
               <div className="form-row">
                 <div className="form-group">
                   <label>Ngày Nhận Phòng *</label>
-                  <input
-                    type="date"
-                    value={form.checkIn}
+                  <input type="date" value={form.checkIn}
                     min={new Date().toISOString().split('T')[0]}
-                    onChange={e => setForm({ ...form, checkIn: e.target.value })}
-                    required
-                  />
+                    onChange={e => setForm({ ...form, checkIn: e.target.value })} required />
                 </div>
                 <div className="form-group">
                   <label>Ngày Trả Phòng *</label>
-                  <input
-                    type="date"
-                    value={form.checkOut}
+                  <input type="date" value={form.checkOut}
                     min={form.checkIn || new Date().toISOString().split('T')[0]}
-                    onChange={e => setForm({ ...form, checkOut: e.target.value })}
-                    required
-                  />
+                    onChange={e => setForm({ ...form, checkOut: e.target.value })} required />
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label>Số Khách</label>
-                  <select
-                    value={form.guests}
-                    onChange={e => setForm({ ...form, guests: Number(e.target.value) })}
-                  >
+                  <select value={form.guests} onChange={e => setForm({ ...form, guests: Number(e.target.value) })}>
                     {Array.from({ length: room.maxGuests }, (_, i) => (
                       <option key={i + 1} value={i + 1}>{i + 1} người</option>
                     ))}
@@ -191,13 +159,13 @@ const BookingModal = ({ room, onClose }) => {
 
             {/* Dịch vụ đi kèm */}
             <div className="form-section">
-              <div className="form-section-title">✨ Dịch Vụ Đi Kèm <span style={{ fontSize: '0.78rem', fontWeight: 400, color: 'var(--text-light)' }}>(tuỳ chọn)</span></div>
+              <div className="form-section-title">
+                ✨ Dịch Vụ Đi Kèm
+                <span style={{ fontSize: '0.78rem', fontWeight: 400, color: 'var(--text-light)', marginLeft: 8 }}>(tuỳ chọn)</span>
+              </div>
 
-              {/* Food service toggle */}
-              <div
-                className={`service-toggle ${foodService ? 'selected' : ''}`}
-                onClick={() => setFoodService(!foodService)}
-              >
+              {/* Food toggle */}
+              <div className={`service-toggle ${foodService ? 'selected' : ''}`} onClick={() => setFoodService(!foodService)}>
                 <div className="service-toggle-left">
                   <span className="service-toggle-icon">🍽️</span>
                   <div className="service-toggle-info">
@@ -211,15 +179,13 @@ const BookingModal = ({ room, onClose }) => {
               {foodService && (
                 <div style={{ marginBottom: 16 }}>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: 10 }}>
-                    Chọn các món ăn bạn muốn thưởng thức trong kỳ nghỉ:
+                    Chọn các món ăn bạn muốn thưởng thức:
                   </p>
                   <div className="food-select-grid">
                     {MENU_ITEMS.map(item => (
-                      <div
-                        key={item.id}
+                      <div key={item.id}
                         className={`food-select-item ${selectedFoods.includes(item.id) ? 'selected' : ''}`}
-                        onClick={() => toggleFood(item.id)}
-                      >
+                        onClick={() => toggleFood(item.id)}>
                         <img src={item.image} alt={item.name} />
                         <div className="food-select-item-info">
                           <strong>{item.name}</strong>
@@ -232,55 +198,40 @@ const BookingModal = ({ room, onClose }) => {
                     ))}
                   </div>
                   <p style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginTop: 8 }}>
-                    💡 Hoặc bạn có thể gọi món trực tiếp tại nhà hàng khi đến khách sạn.
+                    💡 Hoặc gọi món trực tiếp tại nhà hàng khi đến khách sạn.
                   </p>
                 </div>
               )}
 
-              {/* Sauna service toggle */}
-              <div
-                className={`service-toggle ${saunaService ? 'selected' : ''}`}
-                onClick={() => setSaunaService(!saunaService)}
-              >
+              {/* Spa toggle */}
+              <div className={`service-toggle ${spaService ? 'selected' : ''}`} onClick={() => setSpaService(!spaService)}>
                 <div className="service-toggle-left">
-                  <span className="service-toggle-icon">🧖</span>
+                  <span className="service-toggle-icon">🌿</span>
                   <div className="service-toggle-info">
-                    <strong>Dịch Vụ Xông Hơi</strong>
-                    <span>Thư giãn với liệu pháp thảo dược núi rừng Cao Bằng</span>
+                    <strong>Chăm Sóc Sức Khỏe / Spa</strong>
+                    <span>Ngâm lá thuốc & xông hơi thảo dược người Dao/Tày — Tầng 5</span>
                   </div>
                 </div>
-                <div className={`toggle-switch ${saunaService ? 'on' : ''}`} />
+                <div className={`toggle-switch ${spaService ? 'on' : ''}`} />
               </div>
 
-              {saunaService && (
+              {spaService && (
                 <div style={{ marginBottom: 16 }}>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: 10 }}>
-                    Chọn gói xông hơi phù hợp:
+                    Chọn gói spa phù hợp:
                   </p>
-                  {SAUNA_PACKAGES.map(pkg => (
-                    <label
-                      key={pkg.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 12,
-                        padding: '12px 16px',
-                        marginBottom: 8,
-                        background: selectedSauna === pkg.id ? '#f0fdf4' : 'var(--pink-soft)',
-                        border: `2px solid ${selectedSauna === pkg.id ? 'var(--green-primary)' : 'var(--border)'}`,
-                        borderRadius: 'var(--radius-sm)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="sauna"
-                        value={pkg.id}
-                        checked={selectedSauna === pkg.id}
-                        onChange={() => setSelectedSauna(pkg.id)}
-                        style={{ accentColor: 'var(--green-primary)' }}
-                      />
+                  {SPA_PACKAGES.map(pkg => (
+                    <label key={pkg.id} style={{
+                      display: 'flex', alignItems: 'center', gap: 12,
+                      padding: '12px 16px', marginBottom: 8, cursor: 'pointer',
+                      background: selectedSpa === pkg.id ? '#f0fdf4' : 'var(--pink-soft)',
+                      border: `2px solid ${selectedSpa === pkg.id ? 'var(--green-primary)' : 'var(--border)'}`,
+                      borderRadius: 'var(--radius-sm)', transition: 'all 0.2s',
+                    }}>
+                      <input type="radio" name="spa" value={pkg.id}
+                        checked={selectedSpa === pkg.id}
+                        onChange={() => setSelectedSpa(pkg.id)}
+                        style={{ accentColor: 'var(--green-primary)' }} />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
                           {pkg.name}
@@ -303,17 +254,13 @@ const BookingModal = ({ room, onClose }) => {
               <div className="form-section-title">📝 Ghi Chú</div>
               <div className="form-group">
                 <label>Yêu Cầu Đặc Biệt</label>
-                <textarea
-                  rows={3}
-                  placeholder="Ví dụ: phòng tầng cao, không dị ứng thức ăn, đến muộn sau 22h..."
-                  value={form.notes}
-                  onChange={e => setForm({ ...form, notes: e.target.value })}
-                  style={{ resize: 'vertical' }}
-                />
+                <textarea rows={3} placeholder="Ví dụ: phòng tầng cao, dị ứng thức ăn, đến muộn sau 22h..."
+                  value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })}
+                  style={{ resize: 'vertical' }} />
               </div>
             </div>
 
-            {/* Price summary */}
+            {/* Tổng tiền */}
             <div className="price-summary">
               <div className="price-summary-row">
                 <span>Phòng {room.number} × {calcNights()} đêm</span>
@@ -322,16 +269,13 @@ const BookingModal = ({ room, onClose }) => {
               {foodService && selectedFoods.length > 0 && (
                 <div className="price-summary-row">
                   <span>Dịch vụ ăn uống ({selectedFoods.length} món)</span>
-                  <span>{formatPrice(selectedFoods.reduce((acc, id) => {
-                    const item = MENU_ITEMS.find(m => m.id === id);
-                    return acc + (item?.price || 0);
-                  }, 0))}</span>
+                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (MENU_ITEMS.find(m => m.id === id)?.price || 0), 0))}</span>
                 </div>
               )}
-              {saunaService && selectedSauna && (
+              {spaService && selectedSpa && (
                 <div className="price-summary-row">
-                  <span>Xông hơi — {SAUNA_PACKAGES.find(s => s.id === selectedSauna)?.name}</span>
-                  <span>{formatPrice(SAUNA_PACKAGES.find(s => s.id === selectedSauna)?.price || 0)}</span>
+                  <span>Spa — {SPA_PACKAGES.find(s => s.id === selectedSpa)?.name}</span>
+                  <span>{formatPrice(SPA_PACKAGES.find(s => s.id === selectedSpa)?.price || 0)}</span>
                 </div>
               )}
               <div className="price-summary-row total">
@@ -341,12 +285,9 @@ const BookingModal = ({ room, onClose }) => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="modal-footer">
             <button type="button" className="btn btn-outline" onClick={onClose}>Huỷ</button>
-            <button type="submit" className="btn btn-gold btn-lg">
-              🎉 Xác Nhận Đặt Phòng
-            </button>
+            <button type="submit" className="btn btn-gold btn-lg">🎉 Xác Nhận Đặt Phòng</button>
           </div>
         </form>
       </div>
@@ -355,4 +296,3 @@ const BookingModal = ({ room, onClose }) => {
 };
 
 export default BookingModal;
-

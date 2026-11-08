@@ -12,6 +12,11 @@ const Navbar = ({ currentPage, onNavigate }) => {
 
   const isHome = currentPage === 'home';
 
+  const handleRoomClick = (filter) => {
+    setRoomDropdownOpen(false);
+    onNavigate('rooms', { filter });
+  };
+
   return (
     <nav className={`navbar ${scrolled || !isHome ? 'scrolled' : 'transparent'}`}>
       <div className="navbar-inner">
@@ -30,42 +35,44 @@ const Navbar = ({ currentPage, onNavigate }) => {
 
         {/* Nav Items */}
         <ul className="navbar-nav">
+          {/* Đặt Phòng với Dropdown */}
           <li
             className="nav-item"
             onMouseEnter={() => setRoomDropdownOpen(true)}
             onMouseLeave={() => setRoomDropdownOpen(false)}
           >
-            <span className={`nav-link ${['rooms','room-detail'].includes(currentPage) ? 'active' : ''}`}>
+            <span
+              className={`nav-link ${['rooms', 'room-detail'].includes(currentPage) ? 'active' : ''}`}
+              onClick={() => handleRoomClick('all')}
+            >
               🛏️ Đặt Phòng
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </span>
             <div className={`dropdown ${roomDropdownOpen ? 'open' : ''}`}>
-              <div
-                className="dropdown-item"
-                onClick={() => { onNavigate('rooms', { filter: 'premium' }); setRoomDropdownOpen(false); }}
-              >
+              <div className="dropdown-item" onClick={() => handleRoomClick('premium')}>
                 <span className="dropdown-item-icon">👑</span>
                 <div className="dropdown-item-info">
                   <strong>Phòng Cao Cấp</strong>
-                  <span>8 phòng • Tầng 2</span>
+                  <span>8 phòng • Tầng 2 • 28–30m²</span>
                 </div>
               </div>
-              <div
-                className="dropdown-item"
-                onClick={() => { onNavigate('rooms', { filter: 'standard' }); setRoomDropdownOpen(false); }}
-              >
-                <span className="dropdown-item-icon">🏠</span>
+              <div className="dropdown-item" onClick={() => handleRoomClick('double')}>
+                <span className="dropdown-item-icon">🛏️</span>
                 <div className="dropdown-item-info">
-                  <strong>Phòng Tiêu Chuẩn</strong>
-                  <span>22 phòng • Tầng 3 &amp; 4</span>
+                  <strong>Phòng Đôi Tiêu Chuẩn</strong>
+                  <span>11 phòng • Tầng 3 • 23–24m²</span>
                 </div>
               </div>
-              <div
-                className="dropdown-item"
-                onClick={() => { onNavigate('rooms', { filter: 'all' }); setRoomDropdownOpen(false); }}
-              >
+              <div className="dropdown-item" onClick={() => handleRoomClick('single')}>
+                <span className="dropdown-item-icon">🛏</span>
+                <div className="dropdown-item-info">
+                  <strong>Phòng Đơn Tiêu Chuẩn</strong>
+                  <span>11 phòng • Tầng 4 • 22–24m²</span>
+                </div>
+              </div>
+              <div className="dropdown-item" onClick={() => handleRoomClick('all')}>
                 <span className="dropdown-item-icon">🏨</span>
                 <div className="dropdown-item-info">
                   <strong>Tất Cả Phòng</strong>
@@ -86,17 +93,26 @@ const Navbar = ({ currentPage, onNavigate }) => {
 
           <li className="nav-item">
             <span
-              className={`nav-link ${currentPage === 'sauna' ? 'active' : ''}`}
-              onClick={() => onNavigate('sauna')}
+              className={`nav-link ${currentPage === 'spa' ? 'active' : ''}`}
+              onClick={() => onNavigate('spa')}
             >
-              🧖 Xông Hơi
+              🧖 Chăm Sóc Sức Khỏe
+            </span>
+          </li>
+
+          <li className="nav-item">
+            <span
+              className={`nav-link ${currentPage === 'explore' ? 'active' : ''}`}
+              onClick={() => onNavigate('explore')}
+            >
+              🏨 Khám Phá
             </span>
           </li>
 
           <li className="nav-item">
             <span
               className="nav-link nav-cta"
-              onClick={() => onNavigate('rooms', { filter: 'all' })}
+              onClick={() => handleRoomClick('all')}
             >
               ✨ Đặt Ngay
             </span>
@@ -113,4 +129,3 @@ const Navbar = ({ currentPage, onNavigate }) => {
 };
 
 export default Navbar;
-

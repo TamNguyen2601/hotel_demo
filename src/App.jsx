@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
+import './responsive.css';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -7,11 +8,17 @@ import HomePage from './pages/HomePage';
 import RoomsPage from './pages/RoomsPage';
 import RoomDetailPage from './pages/RoomDetailPage';
 import FoodPage from './pages/FoodPage';
-import SaunaPage from './pages/SaunaPage';
+import SpaPage from './pages/SpaPage';
+import ExplorePage from './pages/ExplorePage';
 
 function App() {
   const [page, setPage] = useState({ name: 'home', params: {} });
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [bookedRoomIds, setBookedRoomIds] = useState(new Set());
+
+  const handleBookingConfirmed = (roomId) => {
+    setBookedRoomIds(prev => new Set([...prev, roomId]));
+  };
 
   // Scroll to top on page change
   useEffect(() => {
@@ -43,6 +50,8 @@ function App() {
           <RoomsPage
             initialFilter={page.params?.filter || 'all'}
             onViewDetail={handleViewRoomDetail}
+            bookedRoomIds={bookedRoomIds}
+            onBookingConfirmed={handleBookingConfirmed}
           />
         );
 
@@ -50,16 +59,21 @@ function App() {
         return (
           <RoomDetailPage
             room={selectedRoom}
+            isBooked={selectedRoom ? bookedRoomIds.has(selectedRoom.id) : false}
             onBack={handleBackFromDetail}
             onNavigateToRooms={() => navigate('rooms', { filter: 'all' })}
+            onBookingConfirmed={handleBookingConfirmed}
           />
         );
 
       case 'food':
         return <FoodPage />;
 
-      case 'sauna':
-        return <SaunaPage />;
+      case 'spa':
+        return <SpaPage />;
+
+      case 'explore':
+        return <ExplorePage onNavigate={navigate} />;
 
       default:
         return <HomePage onNavigate={navigate} />;

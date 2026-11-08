@@ -20,7 +20,7 @@ const HomePage = ({ onNavigate }) => {
         <div className={`hero-bg ${heroBgLoaded ? 'loaded' : ''}`} />
         <div className="hero-overlay" />
         <div className="hero-content">
-          <div className="hero-eyebrow">★★★★★ Khách Sạn 5 Sao</div>
+          <div className="hero-eyebrow">🏡 Mộc Chàm Retreat & Restaurant</div>
           <h1 className="hero-title">
             Mộc Chàm
             <span>Retreat &amp; Restaurant</span>
@@ -39,7 +39,7 @@ const HomePage = ({ onNavigate }) => {
             <button
               className="btn btn-outline"
               style={{ color: 'white', borderColor: 'rgba(255,255,255,0.7)' }}
-              onClick={() => document.getElementById('attractions').scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => onNavigate('explore')}
             >
               🗺️ Khám Phá
             </button>
@@ -97,7 +97,7 @@ const HomePage = ({ onNavigate }) => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
             <div>
               <div className="hero-eyebrow" style={{ color: 'var(--gold)', textAlign: 'left' }}>Về Chúng Tôi</div>
-              <h2 className="section-title">Trải Nghiệm 5 Sao<br />Giữa Núi Rừng Cao Bằng</h2>
+              <h2 className="section-title">Trải Nghiệm Độc Đáo<br />Giữa Núi Rừng Cao Bằng</h2>
               <div className="gold-line" />
               <p style={{ color: 'var(--text-light)', lineHeight: 1.8, marginBottom: 16 }}>
                 <strong style={{ color: 'var(--green-dark)' }}>Mộc Chàm Retreat &amp; Restaurant</strong> là điểm đến nghỉ dưỡng cao cấp
@@ -319,7 +319,7 @@ const HomePage = ({ onNavigate }) => {
             {[
               { icon: '📞', label: '0263 123 4567' },
               { icon: '✉️', label: 'info@moccham.vn' },
-              { icon: '📍', label: 'TP. Cao Bằng' },
+              { icon: '📍', label: 'Xã Đàm Thủy, Cao Bằng' },
             ].map(c => (
               <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: 0.85, fontSize: '0.9rem' }}>
                 <span>{c.icon}</span> {c.label}
