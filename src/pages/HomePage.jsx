@@ -26,8 +26,8 @@ const HomePage = ({ onNavigate }) => {
             <span>Retreat &amp; Restaurant</span>
           </h1>
           <p className="hero-subtitle">
-            Nghỉ dưỡng đẳng cấp giữa lòng Cao Bằng — nơi núi rừng hùng vĩ gặp gỡ ẩm thực tinh tế
-            và liệu pháp thư giãn truyền thống.
+            Nghỉ dưỡng đẳng cấp giữa lòng Cao Bằng — nơi núi rừng hùng vĩ<br />
+            gặp gỡ ẩm thực tinh tế và liệu pháp thư giãn truyền thống.
           </p>
           <div className="hero-actions">
             <button
@@ -109,12 +109,26 @@ const HomePage = ({ onNavigate }) => {
                 đặc sản Cao Bằng thuần chất đến khu xông hơi thảo dược truyền thống —
                 mỗi khoảnh khắc tại Mộc Chàm là một ký ức đáng trân trọng.
               </p>
-              <div className="stars-row" style={{ marginBottom: 24 }}>★★★★★</div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  marginBottom: 24,
+                  fontSize: '0.98rem',
+                  fontFamily: 'Playfair Display, serif',
+                  fontStyle: 'italic',
+                  color: 'var(--green-dark)',
+                  letterSpacing: 0.3,
+                }}
+              >
+                <span>From Cao Bằng with love</span>
+                <span style={{ color: '#e53e3e', fontStyle: 'normal', fontSize: '1rem' }}>❤️</span>
+              </div>
               <div style={{ display: 'flex', gap: 48 }}>
                 {[
                   { num: '30+', label: 'Phòng nghỉ' },
-                  { num: '10+', label: 'Món đặc sản' },
-                  { num: '6', label: 'Phòng xông hơi' },
+                  { num: '15+', label: 'Món đặc sản' },
                 ].map(stat => (
                   <div key={stat.label} style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--green-primary)', fontFamily: 'Playfair Display, serif' }}>{stat.num}</div>
@@ -156,15 +170,15 @@ const HomePage = ({ onNavigate }) => {
             <div className="hero-eyebrow" style={{ color: 'var(--gold)' }}>Dịch Vụ Nổi Bật</div>
             <h2 className="section-title">Trải Nghiệm Độc Đáo</h2>
             <div className="gold-line" style={{ margin: '12px auto 20px' }} />
-            <p className="section-subtitle" style={{ margin: '0 auto' }}>
+            <p className="section-subtitle" style={{ margin: '0 auto', maxWidth: 'none' }}>
               Chúng tôi mang đến trải nghiệm nghỉ dưỡng toàn diện kết hợp văn hóa bản địa đặc sắc
             </p>
           </div>
           <div className="features-grid">
             {[
               { icon: '🏨', title: 'Phòng Nghỉ Sang Trọng', desc: '30 phòng các loại từ tiêu chuẩn đến cao cấp. Nội thất gỗ tự nhiên, view núi rừng, dịch vụ quản gia riêng.' },
-              { icon: '🍜', title: 'Nhà Hàng Đặc Sản', desc: 'Thực đơn 50+ món đặc sản Cao Bằng thuần chất. Lợn quay, khau nhục, phở chua... do đầu bếp người Tày chế biến.' },
-              { icon: '🧖', title: 'Xông Hơi Thảo Dược', desc: 'Liệu pháp xông hơi với thảo dược quý rừng Cao Bằng. 6 phòng riêng tư, nhiều gói dịch vụ toàn diện.' },
+              { icon: '🍜', title: 'Nhà Hàng Đặc Sản', desc: 'Thực đơn 15+ món đặc sản Cao Bằng thuần chất. Vịt quay 7 vị, khau nhục, phở chua... do đầu bếp người Tày chế biến.' },
+              { icon: '🧖', title: 'Xông Hơi Thảo Dược', desc: 'Liệu pháp xông hơi và ngâm tắm thảo dược quý rừng Cao Bằng, mang đến các gói phục hồi toàn diện.' },
               { icon: '🗺️', title: 'Tour Khám Phá', desc: 'Dịch vụ hướng dẫn tham quan thác Bản Giốc, hồ Thang Hen, động Ngườm Ngao và các địa danh lịch sử.' },
               { icon: '🚗', title: 'Đưa Đón Sân Bay', desc: 'Dịch vụ đưa đón tận nơi từ sân bay Cao Bằng, đảm bảo an toàn và tiện lợi cho chuyến đi của bạn.' },
               { icon: '🎎', title: 'Văn Hóa Bản Địa', desc: 'Trải nghiệm văn hóa người Tày, Nùng qua trang phục, nhạc cụ truyền thống và các hoạt động thủ công mỹ nghệ.' },
@@ -192,7 +206,7 @@ const HomePage = ({ onNavigate }) => {
               {
                 title: 'Phòng Cao Cấp',
                 subtitle: 'Tầng 2 • 8 phòng (201–208)',
-                price: 'Từ 2.800.000',
+                price: 'Từ 1.274.000',
                 desc: 'Phòng suite sang trọng với ban công view núi, bồn tắm Jacuzzi, dịch vụ quản gia riêng 24/7 và minibar cao cấp.',
                 img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
                 filter: 'premium',
@@ -201,7 +215,7 @@ const HomePage = ({ onNavigate }) => {
               {
                 title: 'Phòng Đôi Tiêu Chuẩn',
                 subtitle: 'Tầng 3 • 11 phòng (301–311)',
-                price: 'Từ 1.500.000',
+                price: 'Từ 879.000',
                 desc: 'Phòng đôi ấm cúng với giường Queen size, bồn tắm, cửa sổ view thành phố. Lý tưởng cho cặp đôi và gia đình.',
                 img: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600&q=80',
                 filter: 'standard',
@@ -210,7 +224,7 @@ const HomePage = ({ onNavigate }) => {
               {
                 title: 'Phòng Đơn Tiêu Chuẩn',
                 subtitle: 'Tầng 4 • 11 phòng (401–411)',
-                price: 'Từ 900.000',
+                price: 'Từ 879.000',
                 desc: 'Phòng đơn tiện nghi, thiết kế thông minh tối ưu không gian. Phù hợp cho du khách đơn thân hoặc khách công tác.',
                 img: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=600&q=80',
                 filter: 'standard',
@@ -296,13 +310,9 @@ const HomePage = ({ onNavigate }) => {
       >
         <div className="container">
           <div style={{ fontSize: 48, marginBottom: 20 }}>🏔️</div>
-          <h2 style={{ color: 'var(--white)', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', marginBottom: 16 }}>
+          <h2 style={{ color: 'var(--white)', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', marginBottom: 28 }}>
             Sẵn Sàng Cho Kỳ Nghỉ Hoàn Hảo?
           </h2>
-          <p style={{ opacity: 0.85, maxWidth: 500, margin: '0 auto 32px', fontSize: '1.05rem' }}>
-            Đặt phòng ngay hôm nay và nhận ưu đãi đặc biệt dành cho khách đặt sớm.
-            Giảm 15% cho phòng cao cấp đặt trước 7 ngày.
-          </p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-gold btn-lg" onClick={() => onNavigate('rooms', { filter: 'premium' })}>
               👑 Đặt Phòng Cao Cấp
@@ -317,7 +327,7 @@ const HomePage = ({ onNavigate }) => {
           </div>
           <div style={{ marginTop: 40, display: 'flex', gap: 48, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[
-              { icon: '📞', label: '0263 123 4567' },
+              { icon: '📞', label: '0868 111 126' },
               { icon: '✉️', label: 'info@moccham.vn' },
               { icon: '📍', label: 'Xã Đàm Thủy, Cao Bằng' },
             ].map(c => (

@@ -93,20 +93,20 @@ const FLOORS = [
     id: 'f5',
     tag: 'Tầng Thượng · ~320 m²',
     title: 'Trải Nghiệm & Thư Giãn',
-    subtitle: 'Trà Chiều Panorama · Bản Spa Thảo Dược',
+    subtitle: 'Bản Spa Thảo Dược · Tầng 5',
     color: '#c9a84c',
     bg: 'var(--green-dark)',
     dark: true,
     heroImg: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1400&q=85',
     photos: [
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80',
+      '/spa-facial.jpg',
       'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=700&q=80',
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80',
+      '/spa-massage.jpg',
     ],
-    desc: 'Tầng thượng là điểm đến thư giãn đỉnh cao của Mộc Chàm. Quầy trà panorama ~140 m² với mặt kính toàn cảnh mở ra tầm nhìn thung lũng, núi non hùng vĩ vùng biên giới. Khu spa ~120 m² sở hữu 04 bồn ngâm lá thuốc cổ truyền người Dao/Tày và phòng xông hơi thảo dược view mây trời — phục hồi năng lượng hoàn toàn.',
+    desc: 'Tầng thượng là điểm đến thư giãn đỉnh cao của Mộc Chàm. Khu spa sở hữu 04 bồn ngâm lá thuốc cổ truyền người Dao/Tày và phòng xông hơi thảo dược view mây trời — phục hồi năng lượng hoàn toàn.',
     items: [
-      { icon: '🫖', title: 'Quầy Trà Panorama', sub: '~140 m²', note: 'Cà phê · Chè đắng · Trà hoa quả Cao Bằng' },
       { icon: '🌿', title: 'Bản Spa Thảo Dược', sub: '~120 m² · 04 bồn ngâm', note: 'Lá thuốc người Dao/Tày · View mây' },
+      { icon: '☁️', title: 'Phòng Xông Hơi View Mây', sub: 'Toàn cảnh núi rừng', note: 'Thảo dược rừng nguyên sinh' },
       { icon: '🛗', title: 'Hành Lang Tầng Thượng', sub: '~60 m²', note: 'Kỹ thuật mái · Không gian xanh' },
     ],
     cta: { label: '🌿 Xem Dịch Vụ Spa', page: 'spa' },
@@ -395,7 +395,7 @@ const ExplorePage = ({ onNavigate }) => {
         {/* Gold glow */}
         <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: '60%', height: '60%', background: 'radial-gradient(ellipse, rgba(201,168,76,0.18) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
+        <div style={{ position: 'relative', maxWidth: 740, margin: '0 auto' }}>
           <div style={{ fontSize: '0.72rem', letterSpacing: '4px', color: 'var(--gold-light)', textTransform: 'uppercase', fontWeight: 700, marginBottom: 20 }}>
             Khám Phá Không Gian
           </div>
@@ -405,8 +405,8 @@ const ExplorePage = ({ onNavigate }) => {
           </h1>
           <div style={{ width: 80, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', margin: '24px auto 28px' }} />
           <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)', lineHeight: 1.8, marginBottom: 40 }}>
-            Hành trình khám phá 5 tầng không gian — từ nhà hàng đặc sản tầng trệt
-            đến khu spa thảo dược và quầy trà panorama tầng thượng.
+            Hành trình khám phá 5 tầng không gian — từ nhà hàng đặc sản tầng trệt đến<br />
+            khu spa thảo dược và quầy trà panorama tầng thượng.
           </p>
           {/* Floor jump pills */}
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>

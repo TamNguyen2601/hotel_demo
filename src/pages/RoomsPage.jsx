@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ALL_ROOMS, PREMIUM_ROOMS, DOUBLE_ROOMS, SINGLE_ROOMS } from '../data/hotelData';
 import BookingModal from '../components/BookingModal';
 
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+
+const ROOMS_PER_PAGE = 9;
 
 const FILTERS = [
   { key: 'all',      label: '🏨 Tất Cả Phòng',         count: 30 },
@@ -42,7 +44,14 @@ const RoomCard = ({ room, isBooked, onViewDetail, onBook }) => (
     <div className="room-card-body">
       <div className="room-card-number">Phòng {room.number}</div>
       <h3 className="room-card-name">{room.typeName}</h3>
-      <p className="room-card-desc">{room.shortDesc}</p>
+      <div className="room-card-features">
+        {room.shortDesc.split('\n').map((line, idx) => (
+          <div key={idx} className="room-card-feature-item">
+            <span className="feature-bullet">•</span>
+            <span>{line.trim()}</span>
+          </div>
+        ))}
+      </div>
       <div className="room-card-meta">
         <span>📐 {room.size}m²</span>
         <span>👥 {room.maxGuests} khách</span>
@@ -71,48 +80,44 @@ const RoomCard = ({ room, isBooked, onViewDetail, onBook }) => (
   </div>
 );
 
-const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Set(), onBookingConfirmed }) => {
+const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Set(), onBookingConfirmed, onNavigate }) => {
   const [activeFilter, setActiveFilter] = useState(initialFilter);
+  const [currentPage, setCurrentPage] = useState(1);
   const [bookingRoom, setBookingRoom] = useState(null);
 
-  const rooms = getFilteredRooms(activeFilter);
+  useEffect(() => {
+    setActiveFilter(initialFilter);
+    setCurrentPage(1);
+  }, [initialFilter]);
 
-  const floorInfo = [
-    { label: 'Tầng 1', desc: 'Nhà hàng & Lễ tân',                  icon: '🍴' },
-    { label: 'Tầng 2', desc: '8 Phòng Cao Cấp (201–208) · 28–30m²', icon: '👑' },
-    { label: 'Tầng 3', desc: '11 Phòng Đôi TC (301–311) · 23–24m²', icon: '🛏️' },
-    { label: 'Tầng 4', desc: '11 Phòng Đơn TC (401–411) · 22–24m²', icon: '🛏' },
-    { label: 'Tầng 5', desc: 'Chăm sóc sức khỏe & Trà chiều',       icon: '🌿' },
-  ];
+  const handleFilterChange = (filterKey) => {
+    setActiveFilter(filterKey);
+    setCurrentPage(1);
+  };
+
+  const rooms = getFilteredRooms(activeFilter);
+  const totalPages = Math.ceil(rooms.length / ROOMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ROOMS_PER_PAGE;
+  const paginatedRooms = rooms.slice(startIndex, startIndex + ROOMS_PER_PAGE);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
       {/* Page Header */}
-      <div className="page-header">
+      <div
+        className="page-header"
+        style={{
+          background: `linear-gradient(rgba(13,61,36,0.65), rgba(13,61,36,0.88)), url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80') center/cover`,
+        }}
+      >
         <h1>Danh Sách Phòng</h1>
-        <p>Chọn phòng nghỉ phù hợp với nhu cầu của bạn tại Mộc Chàm Retreat &amp; Restaurant</p>
-      </div>
-
-      {/* Floor Map */}
-      <div style={{ background: 'var(--pink-soft)', borderBottom: '1px solid var(--border)', padding: '16px 0' }}>
-        <div className="container">
-          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4 }}>
-            {floorInfo.map(f => (
-              <div key={f.label} style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                padding: '8px 16px', background: 'var(--white)',
-                borderRadius: 'var(--radius-sm)', fontSize: '0.8rem',
-                whiteSpace: 'nowrap', boxShadow: 'var(--shadow-sm)', flexShrink: 0,
-              }}>
-                <span>{f.icon}</span>
-                <div>
-                  <div style={{ fontWeight: 700, color: 'var(--green-dark)' }}>{f.label}</div>
-                  <div style={{ color: 'var(--text-light)', fontSize: '0.72rem' }}>{f.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <p style={{ maxWidth: '850px', whiteSpace: 'nowrap' }}>
+          Chọn phòng nghỉ phù hợp với nhu cầu của bạn tại Mộc Chàm Retreat &amp; Restaurant
+        </p>
       </div>
 
       {/* Filters */}
@@ -121,7 +126,7 @@ const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Se
           <button
             key={f.key}
             className={`filter-btn ${activeFilter === f.key ? 'active' : ''}`}
-            onClick={() => setActiveFilter(f.key)}
+            onClick={() => handleFilterChange(f.key)}
           >
             {f.label}
             <span style={{
@@ -137,17 +142,17 @@ const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Se
 
       {/* Rooms Grid */}
       <div className="container">
-        <div style={{ padding: '16px 0 8px', color: 'var(--text-light)', fontSize: '0.88rem' }}>
-          Hiển thị <strong style={{ color: 'var(--green-dark)' }}>{rooms.length}</strong> phòng
-          {' · '}
-          <span style={{ color: 'var(--green-primary)' }}>
-            {rooms.filter(r => !bookedRoomIds.has(r.id)).length} còn trống
-          </span>
-          {bookedRoomIds.size > 0 && (
-            <span style={{ color: 'var(--text-light)' }}>
-              {' · '}{rooms.filter(r => bookedRoomIds.has(r.id)).length} đã đặt
-            </span>
-          )}
+        <div style={{
+          padding: '12px 16px',
+          background: '#fffbeb',
+          border: '1px solid var(--gold)',
+          borderRadius: 'var(--radius-sm)',
+          margin: '12px 0',
+          fontSize: '0.88rem',
+          color: 'var(--text)',
+          lineHeight: 1.6,
+        }}>
+          ⚠️ <strong>Lưu ý:</strong> Giá phòng vào các ngày cuối tuần (T7, CN) là <strong>1.329.000đ</strong> đối với phòng cao cấp và <strong>923.000đ</strong> đối với phòng tiêu chuẩn.
         </div>
 
         {rooms.length === 0 ? (
@@ -157,17 +162,52 @@ const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Se
             <p>Thử thay đổi bộ lọc để xem thêm phòng</p>
           </div>
         ) : (
-          <div className="rooms-grid">
-            {rooms.map(room => (
-              <RoomCard
-                key={room.id}
-                room={room}
-                isBooked={bookedRoomIds.has(room.id)}
-                onViewDetail={onViewDetail}
-                onBook={setBookingRoom}
-              />
-            ))}
-          </div>
+          <>
+            <div className="rooms-grid">
+              {paginatedRooms.map(room => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  isBooked={bookedRoomIds.has(room.id)}
+                  onViewDetail={onViewDetail}
+                  onBook={setBookingRoom}
+                />
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  aria-label="Trang trước"
+                >
+                  ← Trước
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  aria-label="Trang sau"
+                >
+                  Sau →
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -181,6 +221,7 @@ const RoomsPage = ({ initialFilter = 'all', onViewDetail, bookedRoomIds = new Se
             // Không đóng modal ở đây - để modal tự hiện màn hình thành công
             // Modal sẽ đóng khi user bấm nút "Đóng" trong success screen
           }}
+          onNavigate={onNavigate}
         />
       )}
     </>

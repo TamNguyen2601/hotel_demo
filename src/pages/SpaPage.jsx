@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SPA_FEATURES, SPA_PACKAGES } from '../data/hotelData';
 
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-const SpaPage = () => {
+const SpaPage = ({ onNavigate }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPkg, setSelectedPkg] = useState(null);
+
+  const handleSelectPackage = (pkg) => {
+    setSelectedPkg(pkg);
+    setShowModal(true);
+  };
   return (
     <>
       {/* Hero */}
@@ -72,12 +79,12 @@ const SpaPage = () => {
           <div className="gold-line" style={{ margin: '12px auto 32px' }} />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
             {[
-              { url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80', h: 280 },
-              { url: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600&q=80', h: 200 },
-              { url: 'https://images.unsplash.com/photo-1612198790700-14e81d5e6e76?w=600&q=80', h: 200 },
-              { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', h: 200 },
-              { url: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=600&q=80', h: 200 },
-              { url: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600&q=80', h: 280 },
+              { url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80', h: 220 },
+              { url: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600&q=80', h: 220 },
+              { url: '/spa-facial.jpg', h: 220 },
+              { url: '/spa-massage.jpg', h: 220 },
+              { url: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=600&q=80', h: 220 },
+              { url: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600&q=80', h: 220 },
             ].map((img, i) => (
               <div
                 key={i}
@@ -88,40 +95,6 @@ const SpaPage = () => {
                 <img src={img.url} alt={`Spa ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trà chiều section */}
-      <section className="section">
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '0.78rem', letterSpacing: 3, color: 'var(--gold)', textTransform: 'uppercase', marginBottom: 12 }}>Tầng 5 • ~140m²</div>
-              <h2 className="section-title">Quầy Trà Chiều<br />Panorama</h2>
-              <div className="gold-line" />
-              <p style={{ color: 'var(--text-light)', lineHeight: 1.8, marginBottom: 16 }}>
-                Khu vực phục vụ <strong style={{ color: 'var(--green-dark)' }}>cà phê, chè đắng và trà hoa quả Cao Bằng</strong> với
-                thiết kế kính panorama mở trọn tầm nhìn ngắm trọn cảnh sắc thung lũng và núi non
-                hùng vĩ của vùng biên giới từ trên cao.
-              </p>
-              <p style={{ color: 'var(--text-light)', lineHeight: 1.8 }}>
-                Đây là không gian lý tưởng để bắt đầu buổi sáng với tách cà phê nhìn ra mây núi,
-                hoặc thư giãn buổi chiều sau chuyến khám phá Thác Bản Giốc, Hồ Thang Hen.
-              </p>
-              <div style={{ marginTop: 20, display: 'flex', gap: 24 }}>
-                {['☕ Cà phê', '🍵 Chè đắng', '🌸 Trà hoa quả'].map(item => (
-                  <div key={item} style={{ fontSize: '0.88rem', color: 'var(--green-dark)', fontWeight: 600 }}>{item}</div>
-                ))}
-              </div>
-            </div>
-            <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', height: 380, boxShadow: 'var(--shadow-lg)' }}>
-              <img
-                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80"
-                alt="Quầy trà panorama"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </div>
           </div>
         </div>
       </section>
@@ -149,8 +122,11 @@ const SpaPage = () => {
                 <ul className="package-includes">
                   {pkg.includes.map((inc, i) => <li key={i}>{inc}</li>)}
                 </ul>
-                <button className={`btn ${pkg.recommended ? 'btn-gold' : 'btn-outline'} w-full`}
-                  style={{ justifyContent: 'center' }}>
+                <button
+                  className={`btn ${pkg.recommended ? 'btn-gold' : 'btn-outline'} w-full`}
+                  style={{ justifyContent: 'center' }}
+                  onClick={() => handleSelectPackage(pkg)}
+                >
                   Chọn Gói Này
                 </button>
               </div>
@@ -171,7 +147,7 @@ const SpaPage = () => {
               { step: '01', title: 'Đặt Lịch', desc: 'Đặt trước hoặc tại quầy lễ tân. Chọn giờ và gói dịch vụ phù hợp.' },
               { step: '02', title: 'Chuẩn Bị', desc: 'Thay trang phục spa. Nhân viên hướng dẫn và chuẩn bị bồn ngâm thảo dược.' },
               { step: '03', title: 'Trải Nghiệm', desc: 'Ngâm lá thuốc, xông hơi view mây trời với nhạc thiền định dân gian.' },
-              { step: '04', title: 'Thư Giãn', desc: 'Thưởng thức trà hoa quả và bánh ngọt tại quầy panorama sau liệu trình.' },
+              { step: '04', title: 'Thư Giãn', desc: 'Nghỉ ngơi, thư giãn và ngắm trọn cảnh sắc núi rừng mây trời sau liệu trình.' },
             ].map(s => (
               <div key={s.step} style={{ textAlign: 'center' }}>
                 <div style={{ width: 60, height: 60, background: 'var(--gold)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '1.2rem', fontWeight: 700, color: 'var(--dark)' }}>
@@ -196,7 +172,7 @@ const SpaPage = () => {
           </p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[
-              { label: 'Hotline đặt lịch', value: '📞 0263 123 4567' },
+              { label: 'Hotline đặt lịch', value: '📞 0868 111 126' },
               { label: 'Giờ mở cửa', value: '🕐 08:00 – 21:00' },
               { label: 'Vị trí', value: '🏢 Tầng 5' },
             ].map(c => (
@@ -208,6 +184,73 @@ const SpaPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Modal Thông Báo */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div
+            className="modal"
+            style={{ maxWidth: 440, textAlign: 'center', padding: '36px 28px', position: 'relative' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                position: 'absolute',
+                top: 14,
+                right: 14,
+                background: 'var(--pink-soft)',
+                border: 'none',
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--text-light)',
+                transition: 'all 0.2s',
+              }}
+              aria-label="Đóng"
+            >
+              ✕
+            </button>
+
+            <div style={{ fontSize: '2.8rem', marginBottom: 12 }}>🌿</div>
+            <h3 style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: '1.35rem',
+              color: 'var(--green-dark)',
+              marginBottom: 12,
+              lineHeight: 1.4,
+            }}>
+              Cùng đặt phòng và tận hưởng dịch vụ cùng chúng tôi nhé!
+            </h3>
+            {selectedPkg && (
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-light)', marginBottom: 24, lineHeight: 1.6 }}>
+                Gói <strong>{selectedPkg.name}</strong> ({formatPrice(selectedPkg.price)}) có thể được chọn trực tiếp ngay khi bạn đặt phòng.
+              </p>
+            )}
+
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+              <button
+                className="btn btn-gold btn-lg"
+                style={{ padding: '12px 36px', fontSize: '1rem', fontWeight: 700 }}
+                onClick={() => {
+                  setShowModal(false);
+                  if (onNavigate) {
+                    onNavigate('rooms', { filter: 'all' });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+              >
+                Đi nào!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

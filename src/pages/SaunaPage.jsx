@@ -170,7 +170,7 @@ const SaunaPage = () => {
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <div style={{ background: 'var(--white)', padding: '16px 28px', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-sm)' }}>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginBottom: 4 }}>Hotline đặt lịch</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--green-primary)' }}>📞 0263 123 4567</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--green-primary)' }}>📞 0868 111 126</div>
             </div>
             <div style={{ background: 'var(--white)', padding: '16px 28px', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-sm)' }}>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginBottom: 4 }}>Giờ mở cửa</div>

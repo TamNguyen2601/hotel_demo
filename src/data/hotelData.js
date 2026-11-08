@@ -7,7 +7,7 @@ export const HOTEL_INFO = {
   fullName: 'Mộc Chàm Retreat & Restaurant',
   tagline: 'Nghỉ dưỡng giữa lòng núi rừng Cao Bằng',
   address: 'Xã Đàm Thủy, tỉnh Cao Bằng',
-  phone: '0263 123 4567',
+  phone: '0868 111 126',
   email: 'info@moccham.vn',
 };
 
@@ -67,12 +67,12 @@ export const PREMIUM_ROOMS = Array.from({ length: 8 }, (_, i) => ({
   type: 'premium',
   typeName: 'Phòng Cao Cấp',
   price: 1274000,
-  priceWeekend: 1574000,
+  priceWeekend: 1329000,
   size: PREMIUM_SIZES[i],
   maxGuests: 2,
   bedType: 'King size',
   description: `Phòng cao cấp ${200 + i + 1} mang đến trải nghiệm nghỉ dưỡng đẳng cấp 5 sao với nội thất sang trọng được thiết kế tinh tế, lấy cảm hứng từ văn hóa bản địa Cao Bằng. Phòng rộng ${PREMIUM_SIZES[i]}m² với ban công hướng ra núi rừng hùng vĩ, bồn tắm Jacuzzi riêng và dịch vụ quản gia tận tâm 24/7.`,
-  shortDesc: `${PREMIUM_SIZES[i]}m² • Ban công view núi • Jacuzzi • Quản gia riêng`,
+  shortDesc: `Diện tích ${PREMIUM_SIZES[i]}m²\nBan công view núi\nJacuzzi\nQuản gia riêng`,
   amenities: ROOM_AMENITIES_PREMIUM,
   images: [
     `https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80`,
@@ -94,12 +94,12 @@ export const DOUBLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   type: 'double',
   typeName: 'Phòng Đôi Tiêu Chuẩn',
   price: 879000,
-  priceWeekend: 1079000,
+  priceWeekend: 923000,
   size: i % 2 === 0 ? 23 : 24,
   maxGuests: 2,
   bedType: 'Queen size',
   description: `Phòng đôi tiêu chuẩn ${300 + i + 1} là lựa chọn hoàn hảo cho các cặp đôi hoặc bạn bè muốn khám phá vẻ đẹp Cao Bằng. Phòng ${i % 2 === 0 ? 23 : 24}m² được thiết kế ấm cúng với màu sắc tươi sáng, nội thất gỗ tự nhiên mang phong cách núi rừng hiện đại. Phòng tắm bồn tắm là điểm nhấn đặc biệt cho kỳ nghỉ của bạn.`,
-  shortDesc: `${i % 2 === 0 ? 23 : 24}m² • Giường Queen size • Bồn tắm • View thành phố`,
+  shortDesc: `Diện tích ${i % 2 === 0 ? 23 : 24}m²\nGiường Queen size\nBồn tắm\nView thành phố`,
   amenities: ROOM_AMENITIES_DOUBLE,
   images: [
     `https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80`,
@@ -121,12 +121,12 @@ export const SINGLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   type: 'single',
   typeName: 'Phòng Đơn Tiêu Chuẩn',
   price: 879000,
-  priceWeekend: 1079000,
+  priceWeekend: 923000,
   size: SINGLE_SIZES[i],
   maxGuests: 2,
   bedType: '2 giường đơn',
   description: `Phòng đơn tiêu chuẩn ${400 + i + 1} (${SINGLE_SIZES[i]}m²) chuyên phục vụ khách đi theo cặp bạn bè, đồng nghiệp hoặc khách đoàn công tác. Phòng bố trí 02 giường đơn (1,2m × 2m/giường), thiết kế tối ưu không gian linh hoạt, có bàn làm việc nhỏ gọn và ban công thoáng mát. Vệ sinh khép kín, trang bị đầy đủ tiện nghi thiết yếu.`,
-  shortDesc: `${SINGLE_SIZES[i]}m² • 2 giường đơn • Ban công • Bàn làm việc`,
+  shortDesc: `Diện tích ${SINGLE_SIZES[i]}m²\n2 giường đơn\nBan công\nBàn làm việc`,
   amenities: ROOM_AMENITIES_SINGLE,
   images: [
     `https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=80`,
@@ -140,100 +140,193 @@ export const SINGLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
 export const ALL_ROOMS = [...PREMIUM_ROOMS, ...DOUBLE_ROOMS, ...SINGLE_ROOMS];
 
 // ============================================================
-// MENU DATA
+// MENU DATA - Nhà Hàng Mộc Chàm (theo menu thực tế)
 // ============================================================
 
-export const MENU_ITEMS = [
+// SET ĐẶC BIỆT
+export const MENU_SETS = [
   {
-    id: 'food-1',
-    name: 'Lợn Quay Cao Bằng',
-    category: 'Món chính',
-    price: 320000,
-    description: 'Lợn quay đặc sản Cao Bằng với lớp da giòn vàng óng, thịt mềm thơm ngậy được ướp theo bí quyết gia truyền của người Nùng. Món ăn không thể thiếu trong mỗi dịp lễ tết.',
-    image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&q=80',
-    tag: 'Đặc sản',
+    id: 'set-1',
+    name: 'Set 1: "Khám Phá Cao Bằng"',
+    subtitle: 'Dành cho 2-3 người',
+    originalPrice: 650000,
+    price: 580000,
+    items: [
+      'Salad rau củ quả sốt chanh leo (1 đĩa)',
+      'Mẹt lạp xưởng & Bò gác bếp lai rai (Size vừa)',
+      'Khâu nhục tộc Tày (1 đĩa)',
+      'Cơm trắng Hạt Ngọc Cao Bằng (1 niêu)',
+      'Rau dạ hiến xào tỏi (1 đĩa)',
+      'Canh miến dong Phia Đén hầm xương (1 bát)',
+      'Thạch đen Thạch An sương sa (2 bát)',
+    ],
+    image: '/foods/set-1.jpg',
   },
   {
-    id: 'food-2',
-    name: 'Bánh Áp Chao',
-    category: 'Món khai vị',
+    id: 'set-2',
+    name: 'Set 2: "Tuyệt Đỉnh Bản Giốc"',
+    subtitle: 'Dành cho 6 người',
+    originalPrice: 1345000,
+    price: 1190000,
+    items: [
+      'Bánh áp chao chảo nóng (1 đĩa)',
+      'Súp gà đồi nấu nấm hương Phia Đén (Size lớn)',
+      'Mẹt lạp xưởng & Bò gác bếp lai rai (Size lớn)',
+      'Vịt quay 7 vị Cao Bằng (Nửa con)',
+      'Khâu nhục tộc Tày (2 đĩa)',
+      'Rau dạ hiến xào thịt bò (2 đĩa)',
+      'Cơm trắng hạt ngọc (2 niêu đất)',
+      'Tráng miệng: Thạch đen Thạch An (6 bát)',
+    ],
+    image: '/foods/set-2.jpg',
+  },
+];
+
+// MÓN KHAI VỊ
+export const MENU_STARTERS = [
+  {
+    id: 'kv-1',
+    name: 'Salad sốt rau củ sốt chanh leo',
     price: 65000,
-    description: 'Bánh áp chao - bánh rán giòn truyền thống của người Tày Cao Bằng. Nhân đậu xanh thơm bùi, lớp vỏ vàng giòn rụm, chấm cùng nước mắm ớt tươi.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
-    tag: 'Truyền thống',
+    image: '/foods/salad-chanh-leo.jpg',
+    category: 'Món khai vị',
   },
   {
-    id: 'food-3',
-    name: 'Khau Nhục Cao Bằng',
-    category: 'Món chính',
-    price: 180000,
-    description: 'Thịt ba chỉ hầm mềm tan trong miệng với hỗn hợp gia vị đặc trưng: tương hoisin, ngũ vị hương và rau tương. Món ăn cầu kỳ, mất nhiều giờ chế biến.',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80',
-    tag: 'Đặc sản',
+    id: 'kv-2',
+    name: 'Súp gà đồi nấu nấm hương phia đén',
+    price: 85000,
+    image: '/foods/sup-ga-doi.jpg',
+    category: 'Món khai vị',
   },
   {
-    id: 'food-4',
-    name: 'Phở Chua Cao Bằng',
-    category: 'Món bún phở',
+    id: 'kv-3',
+    name: 'Bánh áp chao nóng',
+    price: 80000,
+    image: '/foods/banh-ap-chao.jpg',
+    category: 'Món khai vị',
+  },
+  {
+    id: 'kv-4',
+    name: 'Phở chua Cao Bằng',
     price: 75000,
-    description: 'Phở chua - món ăn độc đáo chỉ có ở Cao Bằng với sợi phở gạo dai mềm, thịt vịt quay, dạ dày, lòng... chan nước sốt chua ngọt đậm đà.',
-    image: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&q=80',
-    tag: 'Đặc sản',
+    image: '/foods/pho-chua.jpg',
+    category: 'Món khai vị',
   },
+];
+
+// MÓN CHÍNH
+export const MENU_MAINS = [
   {
-    id: 'food-5',
-    name: 'Cá Trắm Nướng Than',
-    category: 'Món hải sản',
-    price: 250000,
-    description: 'Cá trắm tươi từ hồ Thang Hen nuôi thả tự nhiên, nướng trên than hoa, ướp sả gừng và mắc khén - loại gia vị đặc trưng vùng núi Tây Bắc.',
-    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80',
-    tag: 'Tươi sống',
-  },
-  {
-    id: 'food-6',
-    name: 'Rau Dớn Xào Tỏi',
-    category: 'Món rau',
-    price: 55000,
-    description: 'Rau dớn - loại rau rừng đặc trưng của vùng núi Cao Bằng, xào tỏi thơm phức. Giàu vitamin, thanh mát, là món ăn kèm không thể thiếu.',
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80',
-    tag: 'Đặc sản rừng',
-  },
-  {
-    id: 'food-7',
-    name: 'Lẩu Vịt Nấu Chao',
-    category: 'Lẩu',
-    price: 380000,
-    description: 'Lẩu vịt với nước dùng đậm đà từ chao đỏ, kết hợp sả, gừng, và các loại rau đặc trưng. Phù hợp cho nhóm 2-3 người, ấm lòng trong tiết trời Cao Bằng se lạnh.',
-    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80',
-    tag: 'Nhóm',
-  },
-  {
-    id: 'food-8',
-    name: 'Xôi Trắng Nướng Lá Dong',
-    category: 'Món tráng miệng',
-    price: 45000,
-    description: 'Xôi nếp nương trắng ngần gói trong lá dong xanh mướt, nướng trên bếp than. Chấm muối vừng hoặc ăn kèm thịt kho - hương vị tuổi thơ khó quên.',
-    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80',
-    tag: 'Truyền thống',
-  },
-  {
-    id: 'food-9',
-    name: 'Gà Đồi Cao Bằng Hấp Hành',
+    id: 'mc-1',
+    name: 'Mẹt lạp xườn và bò gác bếp',
+    price: 320000,
+    image: '/foods/met-lap-xuong.jpg',
     category: 'Món chính',
-    price: 290000,
-    description: 'Gà đồi thả rông Cao Bằng, thịt chắc ngọt tự nhiên, hấp cùng hành lá và gừng tươi. Ăn kèm xôi nếp hoặc cơm trắng, chấm muối tiêu chanh.',
-    image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c8?w=400&q=80',
-    tag: 'Đặc sản',
   },
   {
-    id: 'food-10',
-    name: 'Chè Lam Cao Bằng',
-    category: 'Món tráng miệng',
-    price: 35000,
-    description: 'Chè lam - bánh truyền thống làm từ bột nếp, mạch nha, lạc rang và gừng. Vị ngọt thanh, dẻo thơm, là đặc sản mang về làm quà số một của Cao Bằng.',
-    image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80',
-    tag: 'Quà tặng',
+    id: 'mc-2',
+    name: 'Vịt quay 7 vị nửa con',
+    price: 240000,
+    image: '/foods/vit-quay-7-vi.jpg',
+    category: 'Món chính',
   },
+  {
+    id: 'mc-3',
+    name: 'Vịt quay 7 vị nguyên con',
+    price: 460000,
+    image: '/foods/vit-quay-7-vi.jpg',
+    category: 'Món chính',
+  },
+  {
+    id: 'mc-4',
+    name: 'Khâu nhục tộc Tày',
+    price: 190000,
+    image: '/foods/khau-nhuc.jpg',
+    category: 'Món chính',
+  },
+];
+
+// RAU & TINH BỘT
+export const MENU_VEGS = [
+  {
+    id: 'rau-1',
+    name: 'Rau dạ hiến xào tỏi',
+    price: 90000,
+    image: '/foods/rau-da-hien-xao-toi.jpg',
+    category: 'Rau & Tinh bột',
+  },
+  {
+    id: 'rau-2',
+    name: 'Rau dạ hiến xào bò',
+    price: 145000,
+    image: '/foods/rau-da-hien-xao-bo.jpg',
+    category: 'Rau & Tinh bột',
+  },
+  {
+    id: 'rau-3',
+    name: 'Cơm rang lạp xườn',
+    price: 125000,
+    image: '/foods/com-rang-lap-xuong.png',
+    category: 'Rau & Tinh bột',
+  },
+];
+
+// CƠM & CANH
+export const MENU_RICE = [
+  {
+    id: 'com-1',
+    name: 'Cơm trắng Hạt Ngọc',
+    price: 30000,
+    image: '/foods/com-trang-hat-ngoc.jpg',
+    category: 'Cơm & Canh',
+  },
+  {
+    id: 'com-2',
+    name: 'Canh miến dong Phia Đén nấm hương',
+    price: 75000,
+    image: '/foods/canh-mien-dong.jpg',
+    category: 'Cơm & Canh',
+  },
+];
+
+// TRÁNG MIỆNG
+export const MENU_DESSERTS = [
+  {
+    id: 'tm-1',
+    name: 'Thạch đen Thạch An',
+    price: 35000,
+    image: '/foods/thach-den-thach-an.jpg',
+    category: 'Tráng miệng',
+  },
+  {
+    id: 'tm-2',
+    name: 'Bánh trôi tàu',
+    price: 35000,
+    image: '/foods/banh-troi-tau.jpg',
+    category: 'Tráng miệng',
+  },
+];
+
+// ĐỒ UỐNG
+export const MENU_DRINKS_FREE = [
+  { id: 'free-1', name: 'Trà lá vối', note: 'Miễn phí' },
+];
+
+export const MENU_DRINKS_PAID = [
+  { id: 'drink-1', name: 'Nước lọc đóng chai', price: 15000 },
+  { id: 'drink-2', name: 'Coca', price: 25000 },
+  { id: 'drink-3', name: 'Nước ép/Sinh tố mận', price: 35000 },
+  { id: 'drink-4', name: 'Nước chanh leo đá / dâu tằm đá', price: 45000 },
+  { id: 'drink-5', name: 'Rượu ngô men lá Khau Nàng', price: 120000 },
+];
+
+// Legacy export (for BookingModal compatibility)
+export const MENU_ITEMS = [
+  ...MENU_STARTERS,
+  ...MENU_MAINS,
+  ...MENU_VEGS,
+  ...MENU_RICE,
+  ...MENU_DESSERTS,
 ];
 
 // ============================================================
@@ -280,7 +373,7 @@ export const CAO_BANG_ATTRACTIONS = [
     id: 'attr-6',
     name: 'Chợ Phiên Vùng Cao',
     description: 'Những phiên chợ văn hóa đặc sắc của đồng bào dân tộc thiểu số Tày, Nùng, Mông... Nơi giao thương và gặp gỡ, trưng bày các sản phẩm thổ cẩm, ẩm thực truyền thống.',
-    image: 'https://images.unsplash.com/photo-1513623935135-c896b59073c1?w=600&q=80',
+    image: '/cho-phien.jpg',
     distance: 'Nhiều địa điểm',
   },
 ];
@@ -301,14 +394,9 @@ export const SPA_FEATURES = [
     description: 'Phòng xông hơi thảo dược với tầm nhìn toàn cảnh mây trời và núi non hùng vĩ vùng biên giới. Trải nghiệm thư giãn tuyệt đối kết hợp thiên nhiên và liệu pháp truyền thống.',
   },
   {
-    icon: '🫖',
-    title: 'Trà Chiều Panorama',
-    description: 'Quầy trà chiều với thiết kế kính panorama mở trọn tầm nhìn thung lũng. Thưởng thức cà phê, chè đắng và trà hoa quả Cao Bằng giữa không gian núi rừng khoáng đạt.',
-  },
-  {
     icon: '✨',
     title: 'Liệu Trình Toàn Diện',
-    description: 'Gói spa hoàn chỉnh: ngâm lá thuốc, xông hơi thảo dược, massage phục hồi và thưởng trà chiều. Phục hồi năng lượng hoàn toàn sau chuyến khám phá Cao Bằng.',
+    description: 'Gói spa hoàn chỉnh: ngâm lá thuốc, xông hơi thảo dược và massage phục hồi. Phục hồi năng lượng hoàn toàn sau chuyến khám phá Cao Bằng.',
   },
 ];
 

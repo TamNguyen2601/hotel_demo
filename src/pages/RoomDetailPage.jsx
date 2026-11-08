@@ -4,7 +4,7 @@ import BookingModal from '../components/BookingModal';
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingConfirmed }) => {
+const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingConfirmed, onNavigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [bookingRoom, setBookingRoom] = useState(null);
 
@@ -16,19 +16,26 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
   return (
     <>
       {/* Page Header */}
-      <div className="page-header" style={{ padding: '90px 0 40px', textAlign: 'left' }}>
+      <div style={{
+        background: 'var(--white)',
+        padding: '95px 0 20px',
+        textAlign: 'left',
+        borderBottom: '2px solid var(--green-primary)',
+      }}>
         <div className="container">
           <div
             className="back-btn"
-            style={{ color: 'rgba(255,255,255,0.8)', marginBottom: 16 }}
+            style={{ color: 'var(--green-primary)', marginBottom: 8, fontSize: '0.85rem' }}
             onClick={onBack}
           >
             ← Quay lại danh sách phòng
           </div>
-          <h1 style={{ color: 'white', marginBottom: 8 }}>
+          <h1 style={{ color: 'var(--green-dark)', fontSize: 'clamp(1.3rem, 2.8vw, 1.8rem)', marginBottom: 6 }}>
             Phòng {room.number} — {room.typeName}
           </h1>
-          <p style={{ opacity: 0.85 }}>Tầng {room.floor} · {room.size}m² · Tối đa {room.maxGuests} khách</p>
+          <p style={{ color: 'var(--text-light)', fontSize: '0.88rem' }}>
+            Tầng {room.floor} · {room.size}m² · Tối đa {room.maxGuests} khách
+          </p>
         </div>
       </div>
 
@@ -82,7 +89,10 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
                   className="btn btn-gold btn-lg w-full"
                   disabled={roomIsBooked}
                   onClick={() => !roomIsBooked && setBookingRoom(room)}
-                  style={roomIsBooked ? { opacity: 0.45, cursor: 'not-allowed' } : {}}
+                  style={{
+                    justifyContent: 'center',
+                    ...(roomIsBooked ? { opacity: 0.45, cursor: 'not-allowed' } : {}),
+                  }}
                 >
                   🎉 {!roomIsBooked ? 'Đặt Phòng Ngay' : 'Phòng Đã Được Đặt'}
                 </button>
@@ -157,7 +167,7 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
                   📞 Tư vấn trực tiếp
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-light)' }}>
-                  Hotline: <a href="tel:02631234567" style={{ color: 'var(--green-primary)', fontWeight: 600 }}>0263 123 4567</a>
+                  Hotline: <a href="tel:0868111126" style={{ color: 'var(--green-primary)', fontWeight: 600 }}>0868 111 126</a>
                 </div>
               </div>
             </div>
@@ -182,6 +192,7 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
             if (onBookingConfirmed) onBookingConfirmed(id);
             // Không đóng modal ở đây - để modal tự hiện màn hình thành công
           }}
+          onNavigate={onNavigate}
         />
       )}
     </>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { MENU_ITEMS, SPA_PACKAGES } from '../data/hotelData';
+import { MENU_SETS, MENU_ITEMS, SPA_PACKAGES } from '../data/hotelData';
+
+const ALL_FOODS = [...MENU_SETS, ...MENU_ITEMS];
 
 const formatPrice = (price) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
+const BookingModal = ({ room, onClose, onBookingConfirmed, onNavigate }) => {
   const [form, setForm] = useState({
     fullName: '', phone: '', email: '',
     checkIn: '', checkOut: '', guests: 1, notes: '',
@@ -18,16 +20,47 @@ const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
   const toggleFood = (id) =>
     setSelectedFoods(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
+  const handleViewFoodDetail = () => {
+    onClose();
+    if (onNavigate) {
+      onNavigate('food');
+      setTimeout(() => {
+        const el = document.getElementById('set-dac-biet');
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 130;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }, 120);
+    }
+  };
+
   const calcNights = () => {
     if (!form.checkIn || !form.checkOut) return 1;
     const d = (new Date(form.checkOut) - new Date(form.checkIn)) / 86400000;
     return d > 0 ? d : 1;
   };
 
+  const calcRoomTotal = () => {
+    if (form.checkIn && form.checkOut) {
+      const start = new Date(form.checkIn);
+      const end = new Date(form.checkOut);
+      if (end > start) {
+        let total = 0;
+        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+          const dow = d.getDay(); // 0=CN, 6=T7
+          const isWeekend = dow === 0 || dow === 6;
+          total += isWeekend ? (room.priceWeekend || room.price) : room.price;
+        }
+        return total;
+      }
+    }
+    return room.price; // mặc định 1 đêm
+  };
+
   const calcTotal = () => {
-    let total = room.price * calcNights();
+    let total = calcRoomTotal();
     if (foodService)
-      selectedFoods.forEach(id => { const item = MENU_ITEMS.find(m => m.id === id); if (item) total += item.price; });
+      selectedFoods.forEach(id => { const item = ALL_FOODS.find(m => m.id === id); if (item) total += item.price; });
     if (spaService && selectedSpa) {
       const pkg = SPA_PACKAGES.find(s => s.id === selectedSpa);
       if (pkg) total += pkg.price;
@@ -57,12 +90,12 @@ const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
             <div style={{ background: 'var(--pink-soft)', borderRadius: 'var(--radius-sm)', padding: '16px 24px', marginBottom: 24, textAlign: 'left', display: 'inline-block', minWidth: 280 }}>
               <div className="price-summary-row">
                 <span>Phòng {room.number} — {calcNights()} đêm</span>
-                <span>{formatPrice(room.price * calcNights())}</span>
+                <span>{formatPrice(calcRoomTotal())}</span>
               </div>
               {foodService && selectedFoods.length > 0 && (
                 <div className="price-summary-row">
-                  <span>Dịch vụ ăn uống ({selectedFoods.length} món)</span>
-                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (MENU_ITEMS.find(m => m.id === id)?.price || 0), 0))}</span>
+                  <span>Dịch vụ ăn uống ({selectedFoods.length} món/suất)</span>
+                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (ALL_FOODS.find(m => m.id === id)?.price || 0), 0))}</span>
                 </div>
               )}
               {spaService && selectedSpa && (
@@ -178,8 +211,118 @@ const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
 
               {foodService && (
                 <div style={{ marginBottom: 16 }}>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: 10 }}>
-                    Chọn các món ăn bạn muốn thưởng thức:
+                  {/* Highlight Set Đặc Biệt - 2 suất trên 1 dòng */}
+                  <div style={{ marginBottom: 14 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.85rem', fontWeight: 700, color: 'var(--green-dark)', marginBottom: 8 }}>
+                      <span>👑</span>
+                      <span>Set Đặc Biệt (Tiết kiệm hơn):</span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      {MENU_SETS.map(set => {
+                        const isSelected = selectedFoods.includes(set.id);
+                        return (
+                          <div
+                            key={set.id}
+                            onClick={() => toggleFood(set.id)}
+                            style={{
+                              border: isSelected ? '2px solid var(--green-primary)' : '2px solid var(--gold)',
+                              background: isSelected ? '#f0fdf4' : 'linear-gradient(135deg, #fffdf8, #fff8ee)',
+                              borderRadius: 'var(--radius-sm)',
+                              padding: '10px 12px',
+                              cursor: 'pointer',
+                              position: 'relative',
+                              boxShadow: isSelected ? 'var(--shadow-sm)' : '0 2px 8px rgba(201,168,76,0.15)',
+                              transition: 'all 0.2s',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 6 }}>
+                                <div>
+                                  <span style={{
+                                    display: 'inline-block',
+                                    fontSize: '0.68rem',
+                                    fontWeight: 700,
+                                    color: '#8a6508',
+                                    background: 'rgba(201,168,76,0.2)',
+                                    padding: '2px 6px',
+                                    borderRadius: 4,
+                                    marginBottom: 4,
+                                  }}>
+                                    {set.subtitle}
+                                  </span>
+                                  <div style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--green-dark)', lineHeight: 1.3 }}>
+                                    {set.name}
+                                  </div>
+                                </div>
+                                <div className="food-select-item-check" style={{
+                                  background: isSelected ? 'var(--green-primary)' : 'var(--border)',
+                                  color: 'white',
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: '50%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '0.72rem',
+                                  flexShrink: 0,
+                                }}>
+                                  {isSelected ? '✓' : ''}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginTop: 8,
+                              paddingTop: 8,
+                              borderTop: '1px dashed rgba(201,168,76,0.35)',
+                            }}>
+                              <div>
+                                <span style={{ textDecoration: 'line-through', fontSize: '0.75rem', color: 'var(--text-light)', marginRight: 6 }}>
+                                  {formatPrice(set.originalPrice)}
+                                </span>
+                                <strong style={{ color: 'var(--green-primary)', fontSize: '0.92rem' }}>
+                                  {formatPrice(set.price)}
+                                </strong>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleViewFoodDetail();
+                                }}
+                                style={{
+                                  background: 'transparent',
+                                  border: '1px solid var(--green-primary)',
+                                  color: 'var(--green-primary)',
+                                  padding: '3px 8px',
+                                  borderRadius: 4,
+                                  fontSize: '0.72rem',
+                                  fontWeight: 600,
+                                  cursor: 'pointer',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: 2,
+                                }}
+                              >
+                                Chi tiết →
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Danh sách món lẻ */}
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: 8, marginTop: 12 }}>
+                    Hoặc chọn các món lẻ bạn muốn thưởng thức:
                   </p>
                   <div className="food-select-grid">
                     {MENU_ITEMS.map(item => (
@@ -264,12 +407,12 @@ const BookingModal = ({ room, onClose, onBookingConfirmed }) => {
             <div className="price-summary">
               <div className="price-summary-row">
                 <span>Phòng {room.number} × {calcNights()} đêm</span>
-                <span>{formatPrice(room.price * calcNights())}</span>
+                <span>{formatPrice(calcRoomTotal())}</span>
               </div>
               {foodService && selectedFoods.length > 0 && (
                 <div className="price-summary-row">
-                  <span>Dịch vụ ăn uống ({selectedFoods.length} món)</span>
-                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (MENU_ITEMS.find(m => m.id === id)?.price || 0), 0))}</span>
+                  <span>Dịch vụ ăn uống ({selectedFoods.length} món/suất)</span>
+                  <span>{formatPrice(selectedFoods.reduce((acc, id) => acc + (ALL_FOODS.find(m => m.id === id)?.price || 0), 0))}</span>
                 </div>
               )}
               {spaService && selectedSpa && (

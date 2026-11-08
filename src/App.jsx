@@ -52,6 +52,7 @@ function App() {
             onViewDetail={handleViewRoomDetail}
             bookedRoomIds={bookedRoomIds}
             onBookingConfirmed={handleBookingConfirmed}
+            onNavigate={navigate}
           />
         );
 
@@ -63,6 +64,7 @@ function App() {
             onBack={handleBackFromDetail}
             onNavigateToRooms={() => navigate('rooms', { filter: 'all' })}
             onBookingConfirmed={handleBookingConfirmed}
+            onNavigate={navigate}
           />
         );
 
@@ -70,7 +72,7 @@ function App() {
         return <FoodPage />;
 
       case 'spa':
-        return <SpaPage />;
+        return <SpaPage onNavigate={navigate} />;
 
       case 'explore':
         return <ExplorePage onNavigate={navigate} />;
