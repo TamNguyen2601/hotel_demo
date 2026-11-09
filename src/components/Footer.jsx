@@ -23,7 +23,7 @@ const Footer = ({ onNavigate }) => {
             <ul>
               <li onClick={() => onNavigate('home')}>Trang Chủ</li>
               <li onClick={() => onNavigate('explore')}>Khám Phá Khách Sạn</li>
-              <li onClick={() => onNavigate('rooms', { filter: 'premium' })}>Phòng Cao Cấp</li>
+              <li onClick={() => onNavigate('rooms', { filter: 'premium' })}>Phòng Cận Cao Cấp</li>
               <li onClick={() => onNavigate('rooms', { filter: 'standard' })}>Phòng Tiêu Chuẩn</li>
               <li onClick={() => onNavigate('food')}>Nhà Hàng</li>
               <li onClick={() => onNavigate('spa')}>Chăm Sóc Sức Khỏe</li>

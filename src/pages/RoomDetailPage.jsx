@@ -46,22 +46,24 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
             {/* Gallery */}
             <div className="room-gallery">
               <div className="room-gallery-main">
-                <img src={room.images[activeImg]} alt={`Phòng ${room.number} - ảnh ${activeImg + 1}`} />
+                <img src={room.images[activeImg] || room.thumbnail} alt={`Phòng ${room.number}`} />
               </div>
-              <div className="room-gallery-thumbs">
-                {room.images.map((img, i) => (
-                  <img key={i} src={img} alt={`Góc ${i + 1}`}
-                    className={i === activeImg ? 'active' : ''}
-                    onClick={() => setActiveImg(i)} loading="lazy" />
-                ))}
-              </div>
+              {room.images && room.images.length > 1 && (
+                <div className="room-gallery-thumbs">
+                  {room.images.map((img, i) => (
+                    <img key={i} src={img} alt={`Góc ${i + 1}`}
+                      className={i === activeImg ? 'active' : ''}
+                      onClick={() => setActiveImg(i)} loading="lazy" />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Info */}
             <div className="room-detail-info">
               <div className="room-detail-badges">
                 <span className={`badge ${room.type === 'premium' ? 'badge-gold' : 'badge-pink'}`}>
-                  {room.type === 'premium' ? '👑 Phòng Cao Cấp' : '🏠 Phòng Tiêu Chuẩn'}
+                  {room.type === 'premium' ? '👑 Phòng Cận Cao Cấp' : '🏠 Phòng Tiêu Chuẩn'}
                 </span>
                 <span className={`badge ${!roomIsBooked ? 'badge-available' : 'badge-unavailable'}`}>
                   {!roomIsBooked ? '✓ Còn Phòng' : '✗ Đã Đặt'}
@@ -109,7 +111,7 @@ const RoomDetailPage = ({ room, isBooked, onBack, onNavigateToRooms, onBookingCo
                 <div className="price-main">{formatPrice(room.price)}</div>
                 <div className="price-label">/ đêm (ngày thường)</div>
                 <div style={{ marginTop: 8, fontSize: '0.85rem', color: 'var(--text-light)' }}>
-                  Cuối tuần: <strong style={{ color: 'var(--green-primary)' }}>{formatPrice(room.priceWeekend)}</strong>
+                  Ngày lễ &amp; Cuối tuần: <strong style={{ color: 'var(--green-primary)' }}>{formatPrice(room.priceWeekend)}</strong>
                 </div>
               </div>
 

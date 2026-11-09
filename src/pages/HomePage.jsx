@@ -26,7 +26,7 @@ const HomePage = ({ onNavigate }) => {
             <span>Retreat &amp; Restaurant</span>
           </h1>
           <p className="hero-subtitle">
-            Nghỉ dưỡng đẳng cấp giữa lòng Cao Bằng — nơi núi rừng hùng vĩ<br />
+            Nghỉ dưỡng giữa lòng Cao Bằng — nơi núi rừng hùng vĩ<br />
             gặp gỡ ẩm thực tinh tế và liệu pháp thư giãn truyền thống.
           </p>
           <div className="hero-actions">
@@ -74,7 +74,7 @@ const HomePage = ({ onNavigate }) => {
                 <label>Loại Phòng</label>
                 <select>
                   <option value="">Tất cả loại phòng</option>
-                  <option value="premium">Phòng Cao Cấp</option>
+                  <option value="premium">Phòng Cận Cao Cấp</option>
                   <option value="double">Phòng Đôi Tiêu Chuẩn</option>
                   <option value="single">Phòng Đơn Tiêu Chuẩn</option>
                 </select>
@@ -105,7 +105,7 @@ const HomePage = ({ onNavigate }) => {
                 vùng núi phía Bắc và dịch vụ chăm sóc sức khỏe đẳng cấp.
               </p>
               <p style={{ color: 'var(--text-light)', lineHeight: 1.8, marginBottom: 24 }}>
-                Từ những căn phòng cao cấp với ban công nhìn ra núi rừng hùng vĩ, nhà hàng phục vụ
+                Từ những căn phòng cận cao cấp với ban công nhìn ra núi rừng hùng vĩ, nhà hàng phục vụ
                 đặc sản Cao Bằng thuần chất đến khu xông hơi thảo dược truyền thống —
                 mỗi khoảnh khắc tại Mộc Chàm là một ký ức đáng trân trọng.
               </p>
@@ -139,18 +139,18 @@ const HomePage = ({ onNavigate }) => {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <img
-                src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80"
-                alt="Phòng cao cấp"
+                src="/rooms/phong-can-cao-cap.jpg"
+                alt="Phòng cận cao cấp"
                 style={{ borderRadius: 'var(--radius-md)', height: 220, objectFit: 'cover', width: '100%' }}
               />
               <img
-                src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=400&q=80"
+                src="/rooms/phong-doi-tieu-chuan.jpg"
                 alt="Phòng tiêu chuẩn"
                 style={{ borderRadius: 'var(--radius-md)', height: 220, objectFit: 'cover', width: '100%', marginTop: 32 }}
               />
               <img
-                src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80"
-                alt="Nhà hàng"
+                src="/foods/banh-ap-chao.jpg"
+                alt="Ẩm thực đặc sản Cao Bằng"
                 style={{ borderRadius: 'var(--radius-md)', height: 180, objectFit: 'cover', width: '100%', marginTop: -32 }}
               />
               <img
@@ -176,7 +176,7 @@ const HomePage = ({ onNavigate }) => {
           </div>
           <div className="features-grid">
             {[
-              { icon: '🏨', title: 'Phòng Nghỉ Sang Trọng', desc: '30 phòng các loại từ tiêu chuẩn đến cao cấp. Nội thất gỗ tự nhiên, view núi rừng, dịch vụ quản gia riêng.' },
+              { icon: '🏨', title: 'Phòng Nghỉ Sang Trọng', desc: '30 phòng các loại từ tiêu chuẩn đến cận cao cấp. Nội thất gỗ tự nhiên, view núi rừng thoáng mát.' },
               { icon: '🍜', title: 'Nhà Hàng Đặc Sản', desc: 'Thực đơn 15+ món đặc sản Cao Bằng thuần chất. Vịt quay 7 vị, khau nhục, phở chua... do đầu bếp người Tày chế biến.' },
               { icon: '🧖', title: 'Xông Hơi Thảo Dược', desc: 'Liệu pháp xông hơi và ngâm tắm thảo dược quý rừng Cao Bằng, mang đến các gói phục hồi toàn diện.' },
               { icon: '🗺️', title: 'Tour Khám Phá', desc: 'Dịch vụ hướng dẫn tham quan thác Bản Giốc, hồ Thang Hen, động Ngườm Ngao và các địa danh lịch sử.' },
@@ -204,20 +204,20 @@ const HomePage = ({ onNavigate }) => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 28, marginTop: 48 }}>
             {[
               {
-                title: 'Phòng Cao Cấp',
+                title: 'Phòng Cận Cao Cấp',
                 subtitle: 'Tầng 2 • 8 phòng (201–208)',
                 price: 'Từ 1.274.000',
-                desc: 'Phòng suite sang trọng với ban công view núi, bồn tắm Jacuzzi, dịch vụ quản gia riêng 24/7 và minibar cao cấp.',
-                img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+                desc: 'Phòng suite sang trọng với ban công view núi, bồn tắm Jacuzzi và minibar cao cấp.',
+                img: '/rooms/phong-can-cao-cap.jpg',
                 filter: 'premium',
-                badge: '👑 Cao Cấp',
+                badge: '👑 Cận Cao Cấp',
               },
               {
                 title: 'Phòng Đôi Tiêu Chuẩn',
                 subtitle: 'Tầng 3 • 11 phòng (301–311)',
                 price: 'Từ 879.000',
-                desc: 'Phòng đôi ấm cúng với giường Queen size, bồn tắm, cửa sổ view thành phố. Lý tưởng cho cặp đôi và gia đình.',
-                img: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600&q=80',
+                desc: 'Phòng đôi ấm cúng với giường Queen size, cửa sổ view thành phố. Lý tưởng cho cặp đôi và gia đình.',
+                img: '/rooms/phong-doi-tieu-chuan.jpg',
                 filter: 'standard',
                 badge: '🏠 Tiêu Chuẩn',
               },
@@ -226,7 +226,7 @@ const HomePage = ({ onNavigate }) => {
                 subtitle: 'Tầng 4 • 11 phòng (401–411)',
                 price: 'Từ 879.000',
                 desc: 'Phòng đơn tiện nghi, thiết kế thông minh tối ưu không gian. Phù hợp cho du khách đơn thân hoặc khách công tác.',
-                img: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=600&q=80',
+                img: '/rooms/phong-don-tieu-chuan.jpg',
                 filter: 'standard',
                 badge: '🏠 Tiêu Chuẩn',
               },
@@ -287,7 +287,6 @@ const HomePage = ({ onNavigate }) => {
               <div key={attr.id} className="attraction-card">
                 <div className="attraction-img-wrap">
                   <img src={attr.image} alt={attr.name} />
-                  <div className="attraction-distance">📍 {attr.distance}</div>
                 </div>
                 <div className="attraction-body">
                   <h3>{attr.name}</h3>
@@ -315,7 +314,7 @@ const HomePage = ({ onNavigate }) => {
           </h2>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-gold btn-lg" onClick={() => onNavigate('rooms', { filter: 'premium' })}>
-              👑 Đặt Phòng Cao Cấp
+              👑 Đặt Phòng Cận Cao Cấp
             </button>
             <button
               className="btn"

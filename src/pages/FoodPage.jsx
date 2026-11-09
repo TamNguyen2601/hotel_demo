@@ -83,7 +83,7 @@ const FoodPage = () => {
         <div style={{ marginTop: 20, display: 'flex', gap: 24, justifyContent: 'center', fontSize: '0.9rem', opacity: 0.85, flexWrap: 'wrap' }}>
           <span>🏢 Tầng 1 Khách Sạn</span>
           <span>🕐 06:00 – 22:00</span>
-          <span>👥 Sức chứa 80 khách</span>
+          <span>👥 Sức chứa 180 khách</span>
         </div>
       </div>
 

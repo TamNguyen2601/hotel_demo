@@ -103,6 +103,8 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
   padding: 12px 28px;
   border-radius: var(--radius-sm);
@@ -2161,4 +2163,15 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 
 .animate-in {
   animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Payment processing animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progressBar {
+  from { width: 0%; }
+  to { width: 100%; }
 }

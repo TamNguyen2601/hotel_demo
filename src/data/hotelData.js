@@ -23,22 +23,18 @@ const ROOM_AMENITIES_PREMIUM = [
   'Minibar sang trọng',
   'Dịch vụ phòng 24/7',
   'WiFi tốc độ cao',
-  'Két an toàn điện tử',
   'Điều hòa 2 chiều',
   'Máy pha cà phê Nespresso',
   'Bộ đồ dùng vệ sinh cao cấp',
-  'Chăm sóc quản gia riêng',
 ];
 
 const ROOM_AMENITIES_DOUBLE = [
   '02 Giường đôi Queen size',
-  'Phòng tắm bồn tắm',
+  'Phòng tắm vòi hoa sen',
   'Cửa sổ view thành phố',
   'TV 55 inch Full HD',
-  'Minibar',
   'Dịch vụ phòng',
   'WiFi tốc độ cao',
-  'Két an toàn điện tử',
   'Điều hòa 2 chiều',
   'Ấm đun nước & Trà/Cà phê',
   'Bộ đồ dùng vệ sinh',
@@ -51,7 +47,6 @@ const ROOM_AMENITIES_SINGLE = [
   'Bàn làm việc nhỏ gọn',
   'TV 43 inch Full HD',
   'WiFi tốc độ cao',
-  'Két an toàn điện tử',
   'Điều hòa 2 chiều',
   'Ấm đun nước & Trà/Cà phê',
   'Bộ đồ dùng vệ sinh',
@@ -65,23 +60,19 @@ export const PREMIUM_ROOMS = Array.from({ length: 8 }, (_, i) => ({
   number: `2${String(i + 1).padStart(2, '0')}`,
   floor: 2,
   type: 'premium',
-  typeName: 'Phòng Cao Cấp',
+  typeName: 'Phòng Cận Cao Cấp',
   price: 1274000,
   priceWeekend: 1329000,
   size: PREMIUM_SIZES[i],
   maxGuests: 2,
   bedType: 'King size',
-  description: `Phòng cao cấp ${200 + i + 1} mang đến trải nghiệm nghỉ dưỡng đẳng cấp 5 sao với nội thất sang trọng được thiết kế tinh tế, lấy cảm hứng từ văn hóa bản địa Cao Bằng. Phòng rộng ${PREMIUM_SIZES[i]}m² với ban công hướng ra núi rừng hùng vĩ, bồn tắm Jacuzzi riêng và dịch vụ quản gia tận tâm 24/7.`,
-  shortDesc: `Diện tích ${PREMIUM_SIZES[i]}m²\nBan công view núi\nJacuzzi\nQuản gia riêng`,
+  description: `Phòng cận cao cấp ${200 + i + 1} mang đến trải nghiệm nghỉ dưỡng tiện nghi với nội thất sang trọng được thiết kế tinh tế, lấy cảm hứng từ văn hóa bản địa Cao Bằng. Phòng rộng ${PREMIUM_SIZES[i]}m² với ban công hướng ra núi rừng hùng vĩ và bồn tắm Jacuzzi riêng.`,
+  shortDesc: `Diện tích ${PREMIUM_SIZES[i]}m²\nBan công view núi\nBồn tắm Jacuzzi`,
   amenities: ROOM_AMENITIES_PREMIUM,
   images: [
-    `https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80`,
-    `https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80`,
-    `https://images.unsplash.com/photo-1591088398332-8a7791972843?w=800&q=80`,
-    `https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=800&q=80`,
-    `https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80`,
+    '/rooms/phong-can-cao-cap.jpg',
   ],
-  thumbnail: `https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80`,
+  thumbnail: '/rooms/phong-can-cao-cap.jpg',
   available: true,
 }));
 
@@ -98,16 +89,13 @@ export const DOUBLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   size: i % 2 === 0 ? 23 : 24,
   maxGuests: 2,
   bedType: 'Queen size',
-  description: `Phòng đôi tiêu chuẩn ${300 + i + 1} là lựa chọn hoàn hảo cho các cặp đôi hoặc bạn bè muốn khám phá vẻ đẹp Cao Bằng. Phòng ${i % 2 === 0 ? 23 : 24}m² được thiết kế ấm cúng với màu sắc tươi sáng, nội thất gỗ tự nhiên mang phong cách núi rừng hiện đại. Phòng tắm bồn tắm là điểm nhấn đặc biệt cho kỳ nghỉ của bạn.`,
-  shortDesc: `Diện tích ${i % 2 === 0 ? 23 : 24}m²\nGiường Queen size\nBồn tắm\nView thành phố`,
+  description: `Phòng đôi tiêu chuẩn ${300 + i + 1} là lựa chọn hoàn hảo cho các cặp đôi hoặc bạn bè muốn khám phá vẻ đẹp Cao Bằng. Phòng ${i % 2 === 0 ? 23 : 24}m² được thiết kế ấm cúng với màu sắc tươi sáng, nội thất gỗ tự nhiên mang phong cách núi rừng hiện đại. Phòng tắm vòi hoa sen tiện nghi khép kín đầy đủ.`,
+  shortDesc: `Diện tích ${i % 2 === 0 ? 23 : 24}m²\nGiường Queen size\nView thành phố\nVòi hoa sen`,
   amenities: ROOM_AMENITIES_DOUBLE,
   images: [
-    `https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80`,
-    `https://images.unsplash.com/photo-1587985064135-0366536eab42?w=800&q=80`,
-    `https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80`,
-    `https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80`,
+    '/rooms/phong-doi-tieu-chuan.jpg',
   ],
-  thumbnail: `https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=400&q=80`,
+  thumbnail: '/rooms/phong-doi-tieu-chuan.jpg',
   available: true,
 }));
 
@@ -129,11 +117,9 @@ export const SINGLE_ROOMS = Array.from({ length: 11 }, (_, i) => ({
   shortDesc: `Diện tích ${SINGLE_SIZES[i]}m²\n2 giường đơn\nBan công\nBàn làm việc`,
   amenities: ROOM_AMENITIES_SINGLE,
   images: [
-    `https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=80`,
-    `https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&q=80`,
-    `https://images.unsplash.com/photo-1495433324511-bf8e92934d90?w=800&q=80`,
+    '/rooms/phong-don-tieu-chuan.jpg',
   ],
-  thumbnail: `https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=400&q=80`,
+  thumbnail: '/rooms/phong-don-tieu-chuan.jpg',
   available: true,
 }));
 
@@ -424,3 +410,47 @@ export const SPA_PACKAGES = [
     recommended: true,
   },
 ];
+
+// Bảng tra ngày Tết Âm lịch & Giỗ Tổ Hùng Vương (dương lịch) cho các năm
+const LUNAR_HOLIDAYS = {
+  2024: { tetStart: '2024-02-10', tetEnd: '2024-02-14', gioTo: '2024-04-18' },
+  2025: { tetStart: '2025-01-29', tetEnd: '2025-02-02', gioTo: '2025-04-07' },
+  2026: { tetStart: '2026-02-17', tetEnd: '2026-02-21', gioTo: '2026-04-26' },
+  2027: { tetStart: '2027-02-06', tetEnd: '2027-02-10', gioTo: '2027-04-16' },
+  2028: { tetStart: '2028-01-26', tetEnd: '2028-01-30', gioTo: '2028-04-04' },
+};
+
+/**
+ * Trả về true nếu ngày đó là cuối tuần (T7, CN) HOẶC ngày lễ.
+ * Các ngày lễ cố định (dương lịch):
+ *   01/01, 30/04, 01/05, 01–03/09, 24/11
+ * Các ngày lễ âm lịch (tra bảng):
+ *   Tết Nguyên Đán, Giỗ Tổ Hùng Vương
+ */
+export const isHolidayOrWeekend = (date) => {
+  const d = new Date(date);
+  const dow = d.getDay();
+  // Cuối tuần
+  if (dow === 0 || dow === 6) return true;
+
+  const month = d.getMonth() + 1; // 1-based
+  const day = d.getDate();
+  const year = d.getFullYear();
+  const mmdd = `${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+  // Ngày lễ cố định dương lịch
+  const fixedHolidays = ['01-01', '04-30', '05-01', '09-01', '09-02', '09-03', '11-24'];
+  if (fixedHolidays.includes(mmdd)) return true;
+
+  // Ngày lễ âm lịch (tra bảng)
+  const lunarYear = LUNAR_HOLIDAYS[year];
+  if (lunarYear) {
+    const dStr = d.toISOString().slice(0, 10);
+    // Tết Nguyên Đán
+    if (dStr >= lunarYear.tetStart && dStr <= lunarYear.tetEnd) return true;
+    // Giỗ Tổ Hùng Vương
+    if (dStr === lunarYear.gioTo) return true;
+  }
+
+  return false;
+};
